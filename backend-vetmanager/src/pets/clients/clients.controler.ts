@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from "@nestjs/common";
+import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException} from "@nestjs/common";
 import { ClientService } from "./clients.service";
 import { Client } from "@prisma/client"
 
@@ -8,26 +8,36 @@ export class ClientController {
 
     @Post()
     async createClient(@Body() data: Client) {
-        this.clientService.createClient(data)
+       return this.clientService.createClient(data)
     }
 
     @Get()
     async getAllClients(){
-        this.clientService.getAllClients()
+        return this.clientService.getAllClients()
     }
 
     @Get(':id')
     async getClientById(@Param('id') id:string){
-        this.clientService.getClientById(Number(id))
+        const clientFound = await this.clientService.getClientById(Number(id))
+        if (!clientFound) throw new NotFoundException('Client not found')
+        return clientFound
     }
 
     @Delete(':id')
     async deleteClient(@Param('id') id:string){
-        this.clientService.deleteClient(Number(id))
+        try{
+            return await this.clientService.deleteClient(Number(id))
+        }   catch (error){
+            throw new NotFoundException("Client does not exist")
+        }
     }
 
     @Put(':id')
     async updateClient(@Param('id') id:string, @Body() data: Client){
-        this.clientService.updateClient(Number(id), data)
+        try {
+            return await this.clientService.updateClient(Number(id), data)
+        }   catch (error){
+            throw new NotFoundException("Client does not exist")
+        }
     }
 }
