@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException} from "@nestjs/common";
 import { ClientService } from "./clients.service";
 import { Client } from "@prisma/client"
+import { ClientDto } from "./dto/client.dto/client.dto";
 
 @Controller('clients')
 export class ClientController {
@@ -10,6 +11,11 @@ export class ClientController {
     async createClient(@Body() data: Client) {
        return this.clientService.createClient(data)
     }
+
+    // @Post()
+    // async createClient(clientDto: ClientDto) {
+    //    return this.clientService.createClient(clientDto)
+    // }
 
     @Get()
     async getAllClients(){
