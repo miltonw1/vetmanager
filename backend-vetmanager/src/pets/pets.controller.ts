@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
-import { CreatePetDto } from "./dto/create-pet.dto";
-import { UpdatePetDto } from "./dto/update-pet.dto";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Put, Post } from "@nestjs/common";
+import { Pet } from "@prisma/client";
+import { CreatePetDto, PetDto, UpdatePetDto } from "./dto/pet.dto";
 import { PetsService } from "./pets.service";
 
 @Controller("pets")
@@ -8,8 +8,8 @@ export class PetsController {
 	constructor(private readonly petsService: PetsService) {}
 
 	@Post()
-	create(@Body() createPetDto: CreatePetDto) {
-		return this.petsService.create(createPetDto);
+	create(@Body() data: CreatePetDto): Promise<PetDto> {
+		return this.petsService.create(data as Pet);
 	}
 
 	@Get()
@@ -22,9 +22,9 @@ export class PetsController {
 		return this.petsService.findOne(+id);
 	}
 
-	@Patch(":id")
-	update(@Param("id") id: string, @Body() updatePetDto: UpdatePetDto) {
-		return this.petsService.update(+id, updatePetDto);
+	@Put(":id")
+	update(@Param("id") id: string, @Body() data: UpdatePetDto) {
+		return this.petsService.update(+id, data as Pet);
 	}
 
 	@Delete(":id")

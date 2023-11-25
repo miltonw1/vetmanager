@@ -1,5 +1,3 @@
-import { IsInt, IsString, IsOptional } from "class-validator";
-
 export class ClientDto {
 	id: number;
 	name: string;

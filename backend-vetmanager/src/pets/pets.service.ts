@@ -1,26 +1,43 @@
 import { Injectable } from "@nestjs/common";
-import { CreatePetDto } from "./dto/create-pet.dto";
-import { UpdatePetDto } from "./dto/update-pet.dto";
+import { Pet } from "@prisma/client";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class PetsService {
-	create(createPetDto: CreatePetDto) {
-		return "This action adds a new pet";
+	constructor(private prisma: PrismaService) {}
+
+	create(data: Pet): Promise<Pet> {
+		return this.prisma.pet.create({
+			data,
+		});
 	}
 
-	findAll() {
-		return "This action returns all pets";
+	findAll(): Promise<Pet[]> {
+		return this.prisma.pet.findMany();
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} pet`;
+	findOne(id: number): Promise<Pet> {
+		return this.prisma.pet.findUnique({
+			where: {
+				id,
+			},
+		});
 	}
 
-	update(id: number, updatePetDto: UpdatePetDto) {
-		return `This action updates a #${id} pet`;
+	update(id: number, data: Pet): Promise<Pet> {
+		return this.prisma.pet.update({
+			where: {
+				id,
+			},
+			data,
+		});
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} pet`;
+	remove(id: number): Promise<Pet> {
+		return this.prisma.pet.delete({
+			where: {
+				id,
+			},
+		});
 	}
 }

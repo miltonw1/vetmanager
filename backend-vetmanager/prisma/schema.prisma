@@ -39,7 +39,6 @@ model Pet {
   race_id     Int
   owner       Client     @relation(fields: [client_id], references: [id])
   client_id   Int
-  published   Boolean?   @default(false)
 }
 
 model Race {
