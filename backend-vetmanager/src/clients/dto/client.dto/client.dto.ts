@@ -1,12 +1,10 @@
-import { IsInt, IsString } from "class-validator";
+import { IsInt, IsString, IsOptional } from "class-validator";
 
 export class ClientDto {
-    @IsString()
-    name: string;
-    @IsString()
-    email: String;
-    @IsString()
-    address: String;
-    @IsString()
-    city: String;
+	id: number;
+	name: string;
+	phone: string;
+	email: string | null;
+	address: string | null;
+	city: string | null;
 }

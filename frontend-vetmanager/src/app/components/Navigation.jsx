@@ -3,7 +3,7 @@ import styles from './Navigation.module.css'
 
 const links = [{
     label: 'Clientes',
-    route: '/books'
+    route: '/clients'
 }
 ]
 
