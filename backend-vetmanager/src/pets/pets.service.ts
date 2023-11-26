@@ -16,18 +16,12 @@ export class PetsService {
 		return this.prisma.pet.findMany();
 	}
 
-	async findOne(id: number): Promise<Pet> {
-		const pet = await this.prisma.pet.findUnique({
+	findOne(id: number): Promise<Pet> {
+		return this.prisma.pet.findUniqueOrThrow({
 			where: {
 				id,
 			},
-		})
-
-		if (!pet) {
-			throw new Error(`Pet (${id}) not found on DB`)
-		}
-
-		return pet
+		});
 	}
 
 	update(id: number, data: Pet): Promise<Pet> {

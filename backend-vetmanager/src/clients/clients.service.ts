@@ -11,7 +11,7 @@ export class ClientService {
 	}
 
 	getClientById(id: number): Promise<Client> {
-		return this.prisma.client.findUnique({
+		return this.prisma.client.findUniqueOrThrow({
 			where: {
 				id,
 			},

@@ -28,8 +28,8 @@ export class PetsController {
 
 	@Put(":id")
 	async update(@Param("id") id: string, @Body() data: UpdatePetDto): Promise<PetDto> {
-		try{
-		return await this.petsService.update(+id, data as Pet);
+		try {
+			return await this.petsService.update(+id, data as Pet);
 		} catch {
 			throw new NotFoundException("Pet not found");
 		}
@@ -37,11 +37,10 @@ export class PetsController {
 
 	@Delete(":id")
 	async remove(@Param("id") id: string): Promise<PetDto> {
-		try{
-		return await this.petsService.remove(+id);
+		try {
+			return await this.petsService.remove(+id);
 		} catch {
-			throw new NotFoundException("Pet not found")
-
+			throw new NotFoundException("Pet not found");
 		}
 	}
 }

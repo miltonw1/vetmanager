@@ -4,9 +4,9 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class SpeciesService {
-    constructor(private prisma: PrismaService) {}
+	constructor(private prisma: PrismaService) {}
 
-    create(data: Species): Promise<Species> {
+	create(data: Species): Promise<Species> {
 		return this.prisma.species.create({
 			data,
 		});
@@ -17,7 +17,7 @@ export class SpeciesService {
 	}
 
 	findOne(id: number): Promise<Species> {
-		return this.prisma.species.findUnique({
+		return this.prisma.species.findUniqueOrThrow({
 			where: {
 				id,
 			},
@@ -40,5 +40,4 @@ export class SpeciesService {
 			},
 		});
 	}
-
 }

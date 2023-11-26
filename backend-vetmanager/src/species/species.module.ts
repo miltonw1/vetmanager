@@ -8,5 +8,4 @@ import { SpeciesService } from "./species.service";
 	controllers: [SpeciesController],
 	providers: [SpeciesService],
 })
-
 export class SpeciesModule {}
