@@ -43,4 +43,14 @@ export class SpeciesController {
 			throw new NotFoundException("Species not found");
 		}
 	}
+
+	// @Post(":specieId/races")
+	// createRace(@Param("speciedId") speciedId: string, @Body() data: CreateSpeciesDto): Promise<SpeciesDto> {
+	// 	return this.speciesService.createRace(data as Species);
+	// }
+
+	@Get(":speciesId/races")
+	findAllRace(@Param("speciesId") speciesId: string) {
+		return this.speciesService.racesFromSpecies(Number(speciesId));
+	}
 }

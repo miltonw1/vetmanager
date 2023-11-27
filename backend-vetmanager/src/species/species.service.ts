@@ -40,4 +40,12 @@ export class SpeciesService {
 			},
 		});
 	}
+
+	// createRace() {}
+
+	async racesFromSpecies(id: number) {
+		const races = await this.prisma.species.findUniqueOrThrow({ where: { id } }).races();
+
+		return races;
+	}
 }

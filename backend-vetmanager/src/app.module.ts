@@ -10,6 +10,7 @@ import { ClientsModule } from "./clients/clients.module";
 import { PetsModule } from "./pets/pets.module";
 import { SpeciesModule } from "./species/Species.module";
 import { PrismaService } from "./prisma/prisma.service";
+import { RaceModule } from "./races/races.module";
 
 @Module({
 	imports: [
@@ -21,6 +22,7 @@ import { PrismaService } from "./prisma/prisma.service";
 		PetsModule,
 		ClientsModule,
 		SpeciesModule,
+		RaceModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, PrismaService],
