@@ -29,7 +29,7 @@ export class RaceController {
 	@Put(":id")
 	async update(@Param("id") id: string, @Body() data: UpdateRaceDto): Promise<RaceDto> {
 		try {
-			return await this.raceService.update(+id, data as Race);
+			return await this.raceService.update(Number(id), data as Race);
 		} catch {
 			throw new NotFoundException("Race not found");
 		}
@@ -38,7 +38,7 @@ export class RaceController {
 	@Delete(":id")
 	async remove(@Param("id") id: string): Promise<RaceDto> {
 		try {
-			return await this.raceService.remove(+id);
+			return await this.raceService.remove(Number(id));
 		} catch {
 			throw new NotFoundException("Race not found");
 		}

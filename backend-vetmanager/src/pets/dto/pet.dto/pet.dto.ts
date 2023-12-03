@@ -6,6 +6,8 @@ export class PetDto {
 	birthday: Date | null;
 	blood_type: string | null;
 	life_status: string;
-	race_id: number;
+	race_id: number | null;
+	species_id: number;
 	client_id: number;
+	weight: number | null;
 }

@@ -11,9 +11,19 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String?
+  passwords Password[]
+}
+
+model Password {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  body       String
+  created_at DateTime @default(now())
+  version    String?
 }
 
 model Client {
@@ -31,10 +41,13 @@ model Pet {
   id          Int        @id @default(autoincrement())
   name        String
   allergies   String?
-  genre       Genre
+  genre       Genre?
+  weight      Decimal?
   birthday    DateTime?
   blood_type  String?
-  life_status LifeStatus
+  life_status LifeStatus @default(ALIVE)
+  species     Species    @relation(fields: [species_id], references: [id])
+  species_id  Int
   race        Race       @relation(fields: [race_id], references: [id])
   race_id     Int
   owner       Client     @relation(fields: [client_id], references: [id])
@@ -53,6 +66,7 @@ model Species {
   id    Int    @id @default(autoincrement())
   name  String
   races Race[]
+  pets  Pet[]
 }
 
 enum Genre {

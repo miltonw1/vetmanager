@@ -29,7 +29,7 @@ export class SpeciesController {
 	@Put(":id")
 	async update(@Param("id") id: string, @Body() data: UpdateSpeciesDto): Promise<SpeciesDto> {
 		try {
-			return await this.speciesService.update(+id, data as Species);
+			return await this.speciesService.update(Number(id), data as Species);
 		} catch {
 			throw new NotFoundException("Species not found");
 		}
@@ -38,7 +38,7 @@ export class SpeciesController {
 	@Delete(":id")
 	async remove(@Param("id") id: string): Promise<SpeciesDto> {
 		try {
-			return await this.speciesService.remove(+id);
+			return await this.speciesService.remove(Number(id));
 		} catch {
 			throw new NotFoundException("Species not found");
 		}

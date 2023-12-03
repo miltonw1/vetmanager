@@ -1,7 +1,21 @@
 import { Body, Controller, Delete, Get, Param, Put, Post, NotFoundException } from "@nestjs/common";
-import { Pet } from "@prisma/client";
+import { Pet, Prisma } from "@prisma/client";
 import { CreatePetDto, PetDto, UpdatePetDto } from "./dto/pet.dto";
 import { PetsService } from "./pets.service";
+
+function toSchema(data: CreatePetDto | UpdatePetDto) {
+	return {
+		...data,
+		weight: data.weight ? new Prisma.Decimal(data.weight) : null,
+	} as Pet;
+}
+
+function fromSchema(schema: Pet) {
+	return {
+		...schema,
+		weight: schema.weight ? Number(schema.weight) : null,
+	} as PetDto;
+}
 
 @Controller("pets")
 export class PetsController {
@@ -9,7 +23,7 @@ export class PetsController {
 
 	@Post()
 	create(@Body() data: CreatePetDto): Promise<PetDto> {
-		return this.petsService.create(data as Pet);
+		return this.petsService.create(toSchema(data)).then(fromSchema);
 	}
 
 	@Get()
@@ -20,7 +34,7 @@ export class PetsController {
 	@Get(":id")
 	async findOne(@Param("id") id: string): Promise<PetDto> {
 		try {
-			return await this.petsService.findOne(Number(id));
+			return await this.petsService.findOne(Number(id)).then(fromSchema);
 		} catch {
 			throw new NotFoundException("Pet not found");
 		}
@@ -29,7 +43,7 @@ export class PetsController {
 	@Put(":id")
 	async update(@Param("id") id: string, @Body() data: UpdatePetDto): Promise<PetDto> {
 		try {
-			return await this.petsService.update(+id, data as Pet);
+			return await this.petsService.update(Number(id), toSchema(data)).then(fromSchema);
 		} catch {
 			throw new NotFoundException("Pet not found");
 		}
@@ -38,7 +52,7 @@ export class PetsController {
 	@Delete(":id")
 	async remove(@Param("id") id: string): Promise<PetDto> {
 		try {
-			return await this.petsService.remove(+id);
+			return await this.petsService.remove(Number(id)).then(fromSchema);
 		} catch {
 			throw new NotFoundException("Pet not found");
 		}

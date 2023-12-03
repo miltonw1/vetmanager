@@ -1,16 +1,24 @@
-import { IsString, IsInt, IsOptional, IsDate } from "class-validator";
+import { IsString, IsInt, IsOptional, IsDate, IsEnum, IsNumber } from "class-validator";
+import { Genre, LifeStatus } from "../../types";
 
 export class CreatePetDto {
 	@IsString()
 	name: string;
 
+	@IsNumber()
+	@IsOptional()
+	weight?: number;
+
+	@IsInt()
+	species_id: number;
+
 	@IsString()
 	@IsOptional()
 	allergies: string;
 
-	@IsString()
+	@IsEnum(Genre)
 	@IsOptional()
-	genre: string | null;
+	genre: Genre;
 
 	@IsDate()
 	@IsOptional()
@@ -20,11 +28,13 @@ export class CreatePetDto {
 	@IsOptional()
 	blood_type: string | null;
 
-	@IsString()
-	life_status: string;
+	@IsEnum(LifeStatus)
+	@IsOptional()
+	life_status: LifeStatus;
 
 	@IsInt()
-	race_id: number;
+	@IsOptional()
+	race_id?: number;
 
 	@IsInt()
 	client_id: number;
