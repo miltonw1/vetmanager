@@ -1,22 +1,34 @@
 import bcrypt from "bcrypt";
-
 import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+
+import { User } from "@prisma/client"
 import { UsersService } from "../users/services/users.service";
 import { LoginDto } from "./dto";
 
 @Injectable()
 export class SessionService {
-	constructor(private users: UsersService) {}
+	constructor(private users: UsersService, private jwtService: JwtService) {}
 
-	async validateCredentials({ email, password }: LoginDto) {
-		const user = await this.users.findByEmail(email);
+	async validateUser({ email, password }: LoginDto) {
+		const result = await this.users.findByEmail(email);
 
-		const hashed = user.passwords[0];
+		if (!result) return null
 
-		return bcrypt.compare(password, hashed.body);
+		const { passwords, ...user } = result;
+
+		const isSamePassword = bcrypt.compare(password, passwords[0].body);
+
+		return isSamePassword
+			? user as User
+			: null
 	}
 
-	async createSession({ email }) {
-		// nuevo token
+	createSession(user: User) {
+		const payload = { username: user.email, sub: user.id };
+
+		return {
+			access_token: this.jwtService.sign(payload)
+		}
 	}
 }
