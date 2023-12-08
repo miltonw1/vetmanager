@@ -1,19 +1,20 @@
-import { Body, Controller, Get, Post, NotAcceptableException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { Body, Controller, Get, Post, NotAcceptableException, UseGuards, Request } from "@nestjs/common";
 import { SessionService } from "./session.service";
+import { UsersService } from "../users/services/users.service";
 import { LoginDto } from "./dto";
+import { JwtAuthGuard } from "./guards/jwt.guard";
 
 @Controller("session")
 export class SessionController {
-	constructor(private readonly sessionService: SessionService, private readonly config: ConfigService) {}
+	constructor(private readonly sessionService: SessionService, private readonly userService: UsersService) {}
 
 	@Post("login")
 	async login(@Body() data: LoginDto) {
 		try {
-			const available = await this.sessionService.validateCredentials(data);
+			const user = await this.sessionService.validateUser(data);
 
-			if (available) {
-				return this.sessionService.createSession(data);
+			if (user) {
+				return this.sessionService.createSession(user);
 			}
 
 			throw new NotAcceptableException("Wrong credentials");
@@ -22,6 +23,9 @@ export class SessionController {
 		}
 	}
 
+	@UseGuards(JwtAuthGuard)
 	@Get("user")
-	getCurrentUser() {}
+	getCurrentUser(@Request() req) {
+		return this.userService.findOne(req.user.userId)
+	}
 }
