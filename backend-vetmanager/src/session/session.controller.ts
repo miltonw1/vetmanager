@@ -26,6 +26,6 @@ export class SessionController {
 	@UseGuards(JwtAuthGuard)
 	@Get("user")
 	getCurrentUser(@Request() req) {
-		return this.userService.findOne(req.user.userId)
+		return this.userService.findOne(req.user.userId);
 	}
 }
