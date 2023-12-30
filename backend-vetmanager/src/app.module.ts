@@ -13,6 +13,7 @@ import { PrismaService } from "./prisma/prisma.service";
 import { RaceModule } from "./races/races.module";
 import { UsersModule } from "./users/users.module";
 import { SessionModule } from "./session/session.module";
+import { PetHistoryModule } from './pet-history/pet-history.module';
 
 @Module({
 	imports: [
@@ -22,6 +23,7 @@ import { SessionModule } from "./session/session.module";
 			validate: EnvConfigValidation,
 		}),
 		PetsModule,
+		PetHistoryModule,
 		ClientsModule,
 		SpeciesModule,
 		RaceModule,

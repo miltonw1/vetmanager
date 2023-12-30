@@ -38,20 +38,41 @@ model Client {
 }
 
 model Pet {
-  id          Int        @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   name        String
   allergies   String?
   genre       Genre?
   weight      Decimal?
   birthday    DateTime?
   blood_type  String?
-  life_status LifeStatus @default(ALIVE)
-  species     Species    @relation(fields: [species_id], references: [id])
+  life_status LifeStatus   @default(ALIVE)
+  species     Species      @relation(fields: [species_id], references: [id])
   species_id  Int
-  race        Race       @relation(fields: [race_id], references: [id])
+  race        Race         @relation(fields: [race_id], references: [id])
   race_id     Int
-  owner       Client     @relation(fields: [client_id], references: [id])
+  owner       Client       @relation(fields: [client_id], references: [id])
   client_id   Int
+  histories   PetHistory[]
+}
+
+model PetHistory {
+  id          Int               @id @default(autoincrement())
+  pet         Pet               @relation(fields: [pet_id], references: [id])
+  pet_id      Int
+  diagnostic  String
+  observation String?
+  weight      Decimal?
+  images      PetHistoryImage[]
+  created_at  DateTime          @default(now())
+}
+
+model PetHistoryImage {
+  id             Int        @id @default(autoincrement())
+  pet_history    PetHistory @relation(fields: [pet_history_id], references: [id])
+  pet_history_id Int
+
+  image_src String?
+  image_url String?
 }
 
 model Race {

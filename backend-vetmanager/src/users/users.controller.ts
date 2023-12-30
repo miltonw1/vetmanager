@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotAcceptableException } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotAcceptableException, UseGuards } from "@nestjs/common";
 import { User } from "@prisma/client";
 import { hash } from "bcrypt";
 
@@ -6,7 +6,9 @@ import { ConfigService } from "@nestjs/config";
 import { UsersService } from "./services/users.service";
 import { PasswordsService } from "./services/passwords.service";
 import { CreateUserDto, UpdateUserDto, UserDto } from "./dto";
+import { JwtAuthGuard } from "../session/guards/jwt.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller("users")
 export class UsersController {
 	constructor(
