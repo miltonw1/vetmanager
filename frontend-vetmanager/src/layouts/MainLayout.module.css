@@ -1,0 +1,30 @@
+.main-layout {
+    --menu-width: 10rem;
+    --search-input-width: 8rem;
+
+    height: 100%;
+    width: 100%;
+
+    display: grid;
+    grid-template-areas:
+        "menu title search empty"
+        "menu content content empty";
+
+    grid-template-columns: var(--menu-width) auto var(--search-input-width) var(--menu-width);
+}
+
+.main-layout__title {
+    grid-area: title;
+}
+
+.main-layout__search {
+    grid-area: search;
+}
+
+.main-layout__menu {
+    grid-area: menu;
+}
+
+.main-layout__content {
+    grid-area: content;
+}

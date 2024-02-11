@@ -1,0 +1,13 @@
+.login-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 24px;
+}
+
+.main-layout-theme {
+    background-color: #000;
+    background-color: rgba(0,0,0,0.75);
+}
