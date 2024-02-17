@@ -11,7 +11,7 @@ export default function ClientsListPage() {
 
     useEffect(() => {
         getAll()
-    }, [])
+    }, [getAll])
 
     const clientCards = clients.map(client => <ClientCard key={client.id} {...client} />)
 

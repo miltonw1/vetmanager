@@ -1,13 +1,25 @@
 .login-layout {
+    --gap-space: 2rem;
+
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
-    width: 100%;
-    padding: 24px;
+    gap: var(--gap-space);
+    padding: var(--gap-space);
 }
 
-.main-layout-theme {
-    background-color: #000;
-    background-color: rgba(0,0,0,0.75);
+.login-layout__picture {
+    flex-grow: 2;
+}
+
+.login-layout__picture > img,source {
+    border-radius: calc(var(--gap-space) / 2);
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.login-layout__panel {
+    border-radius: calc(var(--gap-space) / 2);
+    width: 42rem;
+    background-color: #eee;
 }

@@ -20,7 +20,7 @@ export default function RootPage() {
               <div
                 className="sr-only"
                 aria-live="polite"
-              ></div>
+              />
             </form>
             <form method="post">
               <button type="submit">New</button>
@@ -29,15 +29,15 @@ export default function RootPage() {
           <nav>
             <ul>
               <li>
-                <a href={`/contacts/1`}>Your Name</a>
+                <a href="/contacts/1">Your Name</a>
               </li>
               <li>
-                <a href={`/contacts/2`}>Your Friend</a>
+                <a href="/contacts/2">Your Friend</a>
               </li>
             </ul>
           </nav>
         </div>
-        <div id="detail"></div>
+        <div id="detail"/>
       </>
     );
   }
