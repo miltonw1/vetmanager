@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import { useClientStore } from "@s/clients.store";
 
@@ -13,11 +14,13 @@ export default function ClientsListPage() {
         getAll()
     }, [getAll])
 
-    const clientCards = clients.map(client => <ClientCard key={client.id} {...client} />)
+    const clientCards = clients.map(client => (<Link to={`/clients/${client.id}`}><ClientCard key={client.id} {...client} /></Link>))
 
     return (
         <MainLayout title="Clients">
-            {clientCards}
+            <section className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min-content, 240px))' }}>
+                {clientCards}
+            </section>
         </MainLayout>
     )
 }

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 import * as clientServices from '../services/clients.services'
 
 export const useClientStore = create((set) => {
@@ -37,3 +38,7 @@ export const useClientStore = create((set) => {
         },
     }
 })
+
+if (process.env.NODE_ENV !== 'production') {
+    mountStoreDevtool('Clients', useClientStore)
+}

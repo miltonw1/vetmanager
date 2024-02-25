@@ -3,14 +3,14 @@ import clsx from 'clsx'
 
 export function MainLayout({ title, children }) {
     return (
-        <main className={style['main-layout']}>
-            <nav className={style['main-layout__menu']}></nav>
+        <main className={clsx(style['main-layout'], 'bg-neutral-50', 'dark:bg-gray-800', 'text-neutral-800', 'dark:text-white')}>
+            <nav className={['main-layout__menu']} />
 
-            <h2 className={clsx(style['main-layout__title'], 'text-3xl', 'font-bold')}>
+            <h2 className={clsx(style['main-layout__title'], 'text-3xl', 'font-bold', 'mt-8')}>
                 {title}
             </h2>
 
-            <search className={style['main-layout__search']}></search>
+            <search className={style['main-layout__search']} />
 
             <section className={style['main-layout__content']}>
                 {children}

@@ -11,6 +11,7 @@
         "menu content content empty";
 
     grid-template-columns: var(--menu-width) auto var(--search-input-width) var(--menu-width);
+    grid-template-rows: 8rem auto;
 }
 
 .main-layout__title {

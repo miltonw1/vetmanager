@@ -1,7 +1,7 @@
 import { CardBase } from '../common/CardBase'
 
 
-export default async function PetCard({ name }) {
+export async function PetCard({ name }) {
 
     return (
         <CardBase>
