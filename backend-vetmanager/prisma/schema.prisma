@@ -48,8 +48,8 @@ model Pet {
   life_status LifeStatus   @default(ALIVE)
   species     Species      @relation(fields: [species_id], references: [id])
   species_id  Int
-  race        Race         @relation(fields: [race_id], references: [id])
-  race_id     Int
+  race        Race?        @relation(fields: [race_id], references: [id])
+  race_id     Int?
   owner       Client       @relation(fields: [client_id], references: [id])
   client_id   Int
   histories   PetHistory[]
