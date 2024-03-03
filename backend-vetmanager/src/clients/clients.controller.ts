@@ -43,4 +43,9 @@ export class ClientController {
 			throw new NotFoundException("Client not found");
 		}
 	}
+
+	@Get(":clientId/pets")
+	findAllPets(@Param("clientId") clientId: string) {
+		return this.clientService.petsFromClient(Number(clientId));
+	}
 }

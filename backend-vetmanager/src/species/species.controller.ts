@@ -50,7 +50,7 @@ export class SpeciesController {
 	// }
 
 	@Get(":speciesId/races")
-	findAllRace(@Param("speciesId") speciesId: string) {
+	findAllRaces(@Param("speciesId") speciesId: string) {
 		return this.speciesService.racesFromSpecies(Number(speciesId));
 	}
 }

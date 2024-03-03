@@ -40,4 +40,11 @@ export class ClientService {
 			},
 		});
 	}
+
+	async petsFromClient(id: number) {
+		const pets = await this.prisma.client.findUniqueOrThrow({ where: { id } }).pets();
+
+		return pets;
+	}
+
 }
