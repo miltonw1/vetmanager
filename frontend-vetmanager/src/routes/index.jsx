@@ -8,6 +8,7 @@ import AppPage from '../pages/AppPage'
 import RootPage from '../pages/RootPage'
 import LoginPage from '../pages/LoginPage'
 import ClientPage from '../pages/clients/ClientPage'
+import CreateClienstPage from '../pages/clients/CreateClientsPage'
 import ClientsListPage from '../pages/clients/ClientsListPage'
 import PetPage  from '../pages/pets/PetPage'
 import PetsListPage from '../pages/pets/PetsListPage'
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: '/clients/:id',
     element: <ClientPage />
+  },
+  {
+    path: '/clients/create',
+    element: <CreateClienstPage />
   },
   {
     path: '/pets',
