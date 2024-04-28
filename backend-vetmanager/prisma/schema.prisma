@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,11 +16,11 @@ model User {
 
 model Password {
   id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [user_id], references: [id])
   user_id    Int
   body       String
   created_at DateTime @default(now())
   version    String?
+  user       User     @relation(fields: [user_id], references: [id])
 }
 
 model Client {
@@ -42,52 +39,51 @@ model Pet {
   name        String
   allergies   String?
   genre       Genre?
-  weight      Decimal?
   birthday    DateTime?
   blood_type  String?
   life_status LifeStatus   @default(ALIVE)
-  species     Species      @relation(fields: [species_id], references: [id])
-  species_id  Int
-  race        Race?        @relation(fields: [race_id], references: [id])
   race_id     Int?
-  owner       Client       @relation(fields: [client_id], references: [id])
   client_id   Int
+  species_id  Int
+  weight      Decimal?
+  owner       Client       @relation(fields: [client_id], references: [id])
+  race        Race?        @relation(fields: [race_id], references: [id])
+  species     Species      @relation(fields: [species_id], references: [id])
   histories   PetHistory[]
 }
 
 model PetHistory {
   id          Int               @id @default(autoincrement())
-  pet         Pet               @relation(fields: [pet_id], references: [id])
   pet_id      Int
   diagnostic  String
   observation String?
   weight      Decimal?
-  images      PetHistoryImage[]
   created_at  DateTime          @default(now())
+  pet         Pet               @relation(fields: [pet_id], references: [id])
+  images      PetHistoryImage[]
 }
 
 model PetHistoryImage {
   id             Int        @id @default(autoincrement())
-  pet_history    PetHistory @relation(fields: [pet_history_id], references: [id])
   pet_history_id Int
-
-  image_src String?
-  image_url String?
+  image_src      String?
+  image_url      String?
+  pet_history    PetHistory @relation(fields: [pet_history_id], references: [id])
 }
 
 model Race {
   id         Int     @id @default(autoincrement())
   name       String
-  species    Species @relation(fields: [species_id], references: [id])
   species_id Int
   pets       Pet[]
+  species    Species @relation(fields: [species_id], references: [id])
 }
 
 model Species {
   id    Int    @id @default(autoincrement())
   name  String
-  races Race[]
   pets  Pet[]
+  races Race[]
 }
 
 enum Genre {

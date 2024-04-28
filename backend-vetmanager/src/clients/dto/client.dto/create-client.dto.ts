@@ -1,13 +1,13 @@
-import { IsString, IsOptional } from "class-validator";
+import { IsString, IsOptional, IsEmail, IsNumberString } from "class-validator";
 
 export class CreateClientDto {
-	@IsString()
+	@IsString({message: "Nombre debe ser un string"})
 	name: string;
 
-	@IsString()
+	@IsNumberString()
 	phone: string;
 
-	@IsString()
+	@IsEmail()
 	@IsOptional()
 	email: string;
 
