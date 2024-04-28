@@ -1,5 +1,10 @@
 const URL = `${import.meta.env.VITE_BASE_URL}/clients`
 
+const baseHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+}
+
 export async function getAll() {
     const response = await fetch(URL)
     const data = await response.json()
@@ -8,14 +13,17 @@ export async function getAll() {
 }
 
 export async function create(payload) {
-    const response = await fetch(URL, { method: 'POST', body: JSON.stringify(payload) })
-    const data = await response.json()
+    const body = JSON.stringify(payload)
 
+    const response = await fetch(URL, { method: 'POST', headers: baseHeaders, body })
+    console.log(response)
+    const data = await response.json()
     return data
 }
 
 export async function update(payload) {
-    const response = await fetch(`${URL}/${payload.id}`, { method: 'PUT', body: JSON.stringify(payload) })
+    const body = JSON.stringify(payload)
+    const response = await fetch(`${URL}/${payload.id}`, { method: 'PUT', headers: baseHeaders, body })
     const data = await response.json()
 
     return data

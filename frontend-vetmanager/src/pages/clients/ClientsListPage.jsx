@@ -18,7 +18,7 @@ export default function ClientsListPage() {
 
     return (
         <MainLayout title="Clients">
-            <section className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min-content, 240px))' }}>
+            <section className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, 360px)' }}>
                 {clientCards}
             </section>
         </MainLayout>

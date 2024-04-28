@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
 
 import { useClientStore } from "@s/clients.store";
 
@@ -8,16 +8,15 @@ import { ClientCard} from '@/components/clients/ClientCard'
 import { ClientForm } from '../../components/clients/ClientForm';
 
 
-export default function CreateClientPage(){
-    const [newClient, setNewClient] = useState()
-
+export default function CreateClientPage() {
+    const [newClient, setNewClient] = useState({})
 	const create = useClientStore((store) => store.create);
+    const navigate = useNavigate()
 
     function onSave() {
-        create(newClient)
-            .then(() => {
-                // redirect con react-router-dom
-            })
+        create(newClient).then(() => {
+            navigate("/clients")
+        })
     }
 
     return (

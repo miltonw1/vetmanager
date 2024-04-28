@@ -9,11 +9,13 @@ import { ClientForm } from "../../components/clients/ClientForm";
 
 export default function EditClientPage() {
 	const params = useParams();
-    const [editClient, setEditClient] = useState()
+	const [editClient, setEditClient] = useState();
 
 	const clients = useClientStore((store) => store.clients);
 	const getAll = useClientStore((store) => store.getAll);
 	const client = clients.find((x) => x.id === parseInt(params.id));
+
+	const update = useClientStore((store) => store.update);
 
 	useEffect(() => {
 		if (clients.length === 0) {
@@ -21,17 +23,16 @@ export default function EditClientPage() {
 		}
 	}, [clients, getAll]);
 
-    function onSave() {
-        // update
-    }
+	function onSave() {
+		// update
+		update(client).then(() => {
+			return redirect("/clients");
+		});
+	}
 
 	return (
 		<MainLayout title="Editar cliente">
-			<ClientForm
-                client={client}
-				onClick={onSave}
-				onChange={setEditClient}
-			/>
+			<ClientForm client={client} onClick={onSave} onChange={setEditClient} />
 		</MainLayout>
 	);
 }
