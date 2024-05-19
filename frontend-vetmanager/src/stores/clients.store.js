@@ -1,26 +1,26 @@
 import { create } from 'zustand'
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import * as clientServices from '../services/clients.services'
+import * as clientsService from '../services/clients.services'
 
 export const useClientStore = create((set) => {
     return {
         clients: [],
 
         getAll: async () => {
-            const data = await clientServices.getAll()
+            const data = await clientsService.getAll()
 
             set({ clients: data })
         },
 
 
         create: async (newClient) => {
-            const data = await clientServices.create(newClient)
+            const data = await clientsService.create(newClient)
 
             set((state) => ({ clients: [...state.clients, data] }))
         },
 
         update: async (payload) => {
-            const data = await clientServices.update(payload)
+            const data = await clientsService.update(payload)
 
             set((state) => {
                 const index = state.client(x => x.id === data.id)

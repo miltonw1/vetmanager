@@ -1,4 +1,6 @@
-const URL = `${import.meta.env.VITE_BASE_URL}/clients`
+const URL = `${import.meta.env.VITE_BASE_URL}/races`
+
+
 
 const baseHeaders = {
     Accept: 'application/json',

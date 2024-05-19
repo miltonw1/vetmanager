@@ -1,4 +1,4 @@
-const URL = `${import.meta.env.VITE_BASE_URL}/clients`
+const URL = `${import.meta.env.VITE_BASE_URL}/pets`;
 
 const baseHeaders = {
     Accept: 'application/json',

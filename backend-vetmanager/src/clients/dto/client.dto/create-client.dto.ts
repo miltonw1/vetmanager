@@ -18,4 +18,8 @@ export class CreateClientDto {
 	@IsString()
 	@IsOptional()
 	city: string;
+
+	@IsString({message: "Deuda debe ser un string"})
+	@IsOptional()
+	debt: string;
 }
