@@ -5,11 +5,17 @@ import * as petServices from "../services/pets.services";
 export const usePetStore = create((set) => {
 	return {
 		pets: [],
+		request: { idle: true },
 
 		getAll: async () => {
+			set({ request: { idle: false, fetching: true } })
+
 			const data = await petServices.getAll();
 
-			set({ pets: data });
+			set({
+				pets: data,
+				request: { idle: false, fetching: false },
+			});
 		},
 
 		create: async (newPet) => {

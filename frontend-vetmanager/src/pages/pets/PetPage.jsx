@@ -37,7 +37,6 @@ export default function PetPage() {
 		)
 	}
 
-	console.log(client)
 
 	return (
 		<MainLayout title={pet?.name}>

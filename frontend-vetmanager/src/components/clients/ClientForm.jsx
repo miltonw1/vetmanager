@@ -37,8 +37,7 @@ export function ClientForm({ client, onClick, onChange }) {
     return (
         <section className="flex flex-col gap-6 w-80">
 
-            <TextInput
-                label="Nombre"
+            <TextInput label="Nombre"
                 className="w-full"
                 value={name}
                 onChange={event => setName(event.target.value)}

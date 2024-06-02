@@ -5,11 +5,17 @@ import * as clientsService from '../services/clients.services'
 export const useClientStore = create((set) => {
     return {
         clients: [],
+        request: { idle: true },
 
         getAll: async () => {
+            set({ request: { idle: false, fetching: true } })
+
             const data = await clientsService.getAll()
 
-            set({ clients: data })
+            set({
+                clients: data,
+                request: { idle: false, fetching: false }
+            })
         },
 
 

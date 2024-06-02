@@ -1,18 +1,24 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
+import { usePetStore } from "@s/pets.store";
 import { useClientStore } from "@s/clients.store";
 
 import { MainLayout } from "@/layouts/MainLayout";
-import { PetCard } from "@/components/pets/PetCard.jsx";
+import { PetSection } from "../../components/clients/PetSection";
 
-export default function ClientPage() {
+export default function ClientPage({ name, weight, age, childern }) {
 	const params = useParams();
 
 	const clients = useClientStore((store) => store.clients);
+	const clientsRequest = useClientStore((store) => store.request);
 	const getAll = useClientStore((store) => store.getAll);
 	const client = clients.find((x) => x.id === parseInt(params.id));
-	console.log(client)
+
+	const pets = usePetStore((store) => store.pets);
+	const petsRequest = usePetStore((store) => store.request);
+	const getAllPets = usePetStore((store) => store.getAll);
+	const clientPets = client ? pets.filter((x) => x.client_id === parseInt(params.id)) : null;
 
 	useEffect(() => {
 		if (clients.length === 0) {
@@ -20,14 +26,36 @@ export default function ClientPage() {
 		}
 	}, [clients, getAll]);
 
-	const pets = [];
+	useEffect(() => {
+		if (pets.length === 0) {
+			getAllPets();
+		}
+	}, [pets, getAllPets]);
 
-	const petCards = pets.map((pet) => <PetCard key={pet.id} name="Bobby" />);
+	const isFetchingClients = clientsRequest.idle || clientsRequest.fetching;
+	const isFetchingPets = petsRequest.idle || petsRequest.fetching;
+
+	if (isFetchingClients || isFetchingPets) {
+		return (
+			<MainLayout title="Cliente">
+				<p>Cargando...</p>
+			</MainLayout>
+		);
+	}
+
+	if (!client) {
+		return (
+			<MainLayout title="Cliente">
+				<p>Cliente no encontrado</p>
+			</MainLayout>
+		);
+	}
+
 
 	return (
 		<MainLayout title="Cliente">
 			<div className="grid grid-col-2 space-y-4">
-				<section className="h-[100%] space-y-2 border border-violet-800 p-4">
+				<section className="h-[100%] space-y-2 p-4">
 					<h3>Información del cliente</h3>
 					{client?.debt && (
 						<p className="text-red-500">
@@ -58,16 +86,11 @@ export default function ClientPage() {
 					{client?.debt && (
 						<p className="text-red-500">
 							<strong>Adeuda:</strong>&nbsp;
-							{client.debt}
 						</p>
 					)}
 				</section>
 
-				<section className="h-[100%] border border-violet-800">
-					<h4>Mascotas</h4>
-
-					<div className="">{petCards}</div>
-				</section>
+				<PetSection pets={clientPets}/>
 			</div>
 		</MainLayout>
 	);
