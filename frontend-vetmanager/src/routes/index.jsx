@@ -13,6 +13,8 @@ import EditClientPage from '../pages/clients/EditClientPage'
 import ClientsListPage from '../pages/clients/ClientsListPage'
 import PetPage  from '../pages/pets/PetPage'
 import PetsListPage from '../pages/pets/PetsListPage'
+import PetHistoryPage from '../pages/pet-history/PetHistoryPage'
+import PetStoriesPage from '../pages/pet-history/PetStoriesPage'
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,15 @@ const router = createBrowserRouter([
     path: '/pets/:id',
     element: <PetPage />
   },
+  {
+    path: '/pets/:id/stories',
+    element: <PetStoriesPage />
+  },
+  {
+    path: '/pets/:id/stories/:id',
+    element: <PetHistoryPage />
+  },
+
 ])
 
 export default function () {

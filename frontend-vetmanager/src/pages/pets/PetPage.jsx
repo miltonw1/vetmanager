@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { usePetStore } from "@s/pets.store";
 import { useClientStore } from "@s/clients.store";
+import { useSpeciesStore } from "@s/species.store"
+import { useRaceStore } from "@s/races.store"
 
 import { MainLayout } from "@/layouts/MainLayout";
 
@@ -18,6 +20,16 @@ export default function PetPage() {
 	const getAllClients = useClientStore((store) => store.getAll);
 	const client = pet ? clients.find((x) => x.id === parseInt(pet.client_id)) : null;
 
+	// Variable called "allSpecies" since plural and singular share the same word
+	const allSpecies = useSpeciesStore ((store) => store.species);
+	const getAllSpecies = useSpeciesStore((store) => store.getAll);
+	const species = pet ? allSpecies.find((x) => x.id === parseInt(pet.species_id)) : null;
+
+	const races = useRaceStore((store) => store.races )
+	const getAllRaces = useRaceStore((store) => store.getAll)
+	const race = pet? races.find( (x)=> x.id === parseInt(pet.race_id)) : null;
+
+	console.log(races)
 
 	useEffect(() => {
 		if (pets.length === 0) {
@@ -30,6 +42,18 @@ export default function PetPage() {
 			getAllClients();
 		}
 	}, [clients, getAllClients])
+
+	useEffect(()=>{
+		if (allSpecies.length === 0) {
+			getAllSpecies();
+		}
+	}, [allSpecies, getAllSpecies])
+
+	useEffect(()=>{
+		if (races.length === 0) {
+			getAllRaces();
+		}
+	}, [races, getAllRaces])
 
 	if (!pet || !client) {
 		return(
@@ -51,11 +75,11 @@ export default function PetPage() {
 			</p>
             <p>
 				<strong>Especie:</strong>&nbsp;
-				{pet?.species_id}
+				{species?.name}
 			</p>
             <p>
 				<strong>Raza:</strong>&nbsp;
-				{pet?.race_id}
+				{race?.name}
 			</p>
             <p>
 			<strong>Sexo:</strong>&nbsp;
@@ -78,7 +102,11 @@ export default function PetPage() {
 				{pet?.allergies === null ? "Dato no ingresado": pet?.allergies}
 			</p>
 
-
+			<p>
+			<Link to={"/pets/"}>
+				<strong> 📖 Ir a historia clínica</strong>
+			</Link>
+			</p>
         </section>
 		</MainLayout>
 	);

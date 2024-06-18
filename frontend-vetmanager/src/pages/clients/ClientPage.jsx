@@ -7,7 +7,7 @@ import { useClientStore } from "@s/clients.store";
 import { MainLayout } from "@/layouts/MainLayout";
 import { PetSection } from "../../components/clients/PetSection";
 
-export default function ClientPage({ name, weight, age, childern }) {
+export default function ClientPage({ name, weight, age, children }) {
 	const params = useParams();
 
 	const clients = useClientStore((store) => store.clients);
