@@ -10,7 +10,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 
 export default function PetHistoryPage() {
 	const params = useParams();
-    console.log(params)
+
 
     return(
         <MainLayout title={"xd"}>

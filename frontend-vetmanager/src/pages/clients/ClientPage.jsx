@@ -7,13 +7,14 @@ import { useClientStore } from "@s/clients.store";
 import { MainLayout } from "@/layouts/MainLayout";
 import { PetSection } from "../../components/clients/PetSection";
 
-export default function ClientPage({ name, weight, age, children }) {
+export default function ClientPage({ children }) {
 	const params = useParams();
 
 	const clients = useClientStore((store) => store.clients);
 	const clientsRequest = useClientStore((store) => store.request);
 	const getAll = useClientStore((store) => store.getAll);
 	const client = clients.find((x) => x.id === parseInt(params.id));
+
 
 	const pets = usePetStore((store) => store.pets);
 	const petsRequest = usePetStore((store) => store.request);

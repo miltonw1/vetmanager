@@ -25,11 +25,12 @@ export default function PetPage() {
 	const getAllSpecies = useSpeciesStore((store) => store.getAll);
 	const species = pet ? allSpecies.find((x) => x.id === parseInt(pet.species_id)) : null;
 
+
 	const races = useRaceStore((store) => store.races )
 	const getAllRaces = useRaceStore((store) => store.getAll)
 	const race = pet? races.find( (x)=> x.id === parseInt(pet.race_id)) : null;
 
-	console.log(races)
+
 
 	useEffect(() => {
 		if (pets.length === 0) {
@@ -103,7 +104,7 @@ export default function PetPage() {
 			</p>
 
 			<p>
-			<Link to={"/pets/"}>
+			<Link to={"/history"}>
 				<strong> 📖 Ir a historia clínica</strong>
 			</Link>
 			</p>
