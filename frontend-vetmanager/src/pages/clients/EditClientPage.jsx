@@ -24,7 +24,7 @@ export default function EditClientPage() {
 	}, [clients, getAll]);
 
 	function onSave() {
-		// update
+		console.log(client)
 		update(client).then(() => {
 			return redirect("/clients");
 		});

@@ -1,43 +1,43 @@
 import { create } from 'zustand'
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import * as storiesServices from "../services/stories.services";
+import * as historiesServices from "../services/histories.services";
 
 
-export const useStoriesStore = create((set) => {
+export const useHistoriesStore = create((set) => {
     return {
-        stories: [],
+        histories: [],
         request: { idle: true },
 
         getAll: async (id) => {
             set({ request: { idle: false, fetching: true } })
 
-            const data = await storiesServices.getAll(id)
+            const data = await historiesServices.getAll(id)
 
             set({
-                stories: data,
+                histories: data,
                 request: { idle: false, fetching: false }
-            })
+            });
         },
 
 
         create: async (newHistory) => {
-            const data = await storiesService.create(newHistory)
+            const data = await historiesService.create(newHistory)
 
-            set((state) => ({ stories: [...state.stories, data] }))
+            set((state) => ({ histories: [...state.histories, data] }))
         },
 
         update: async (payload) => {
-            const data = await storiesService.update(payload)
+            const data = await historiesService.update(payload)
 
             set((state) => {
                 const index = state.history(x => x.id === data.id)
 
                 if (index !== -1) {
                     return {
-                        stories: [
-                            ...state.stories.slice(index),
+                        histories: [
+                            ...state.histories.slice(index),
                             data,
-                            ...state.stories.slice(index + 1)
+                            ...state.histories.slice(index + 1)
                         ]
                     }
                 }
@@ -47,5 +47,5 @@ export const useStoriesStore = create((set) => {
 })
 
 if (process.env.NODE_ENV !== 'production') {
-    mountStoreDevtool('Stories', useStoriesStore)
+    mountStoreDevtool('Histories', useHistoriesStore)
 }

@@ -34,6 +34,7 @@ export function ClientForm({ client, onClick, onChange }) {
         onChange(clientData)
     }, [clientData, onChange])
 
+
     return (
         <section className="flex flex-col gap-6 w-80">
 

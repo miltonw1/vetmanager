@@ -14,7 +14,7 @@ import ClientsListPage from '../pages/clients/ClientsListPage'
 import PetPage  from '../pages/pets/PetPage'
 import PetsListPage from '../pages/pets/PetsListPage'
 import PetHistoryPage from '../pages/pet-history/PetHistoryPage'
-import PetStoriesPage from '../pages/pet-history/PetStoriesPage'
+import PetHistoriesPage from '../pages/pet-history/PetHistoriesPage'
 
 const router = createBrowserRouter([
   {
@@ -56,11 +56,11 @@ const router = createBrowserRouter([
     element: <PetPage />
   },
   {
-    path: '/pets/:id/stories',
-    element: <PetStoriesPage />
+    path: '/pets/:id/histories',
+    element: <PetHistoriesPage />
   },
   {
-    path: '/pets/:id/stories/:id',
+    path: '/pets/:id/histories/:id',
     element: <PetHistoryPage />
   },
 

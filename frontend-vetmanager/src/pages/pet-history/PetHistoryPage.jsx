@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { usePetStore } from "@s/pets.store";
 import { useClientStore } from "@s/clients.store";
+import { useHistoriesStore } from "@s/histories.store";
 
 import { MainLayout } from "@/layouts/MainLayout";
 
@@ -10,6 +11,12 @@ import { MainLayout } from "@/layouts/MainLayout";
 
 export default function PetHistoryPage() {
 	const params = useParams();
+
+
+	const histories = useHistoriesStore((store) => store.histories);
+	const getAllHistories = useHistoriesStore((store) => store.getAll);
+	const history = histories.find((x) => x.id === parseInt(params.id));
+
 
 
     return(

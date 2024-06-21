@@ -5,12 +5,11 @@ const baseHeaders = {
     Accept: 'application/json',
     'Content-Type': 'application/json'
 }
-
+//`${BASE_URL}/pets/${id}/history`
 export async function getAll(id) {
     const response = await fetch(`${BASE_URL}/pets/${id}/history`, { method: 'GET', headers: baseHeaders })
     const data = await response.json()
-    console.log(`${BASE_URL}/pets/${id}/history`)
-    console.log(data)
+
     return data
 }
 

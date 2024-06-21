@@ -104,7 +104,7 @@ export default function PetPage() {
 			</p>
 
 			<p>
-			<Link to={"/history"}>
+			<Link to={`/pets/${pet?.id}/histories/`}>
 				<strong> 📖 Ir a historia clínica</strong>
 			</Link>
 			</p>
