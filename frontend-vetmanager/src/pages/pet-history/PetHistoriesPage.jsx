@@ -34,21 +34,21 @@ export default function PetHistoriesPage() {
 	const isFetchingPets = petsRequest.idle || petsRequest.fetching;
 	const isFetchingHistories = historiesRequest.idle || historiesRequest.fetching;
 
-	if (isFetchingHistories || isFetchingPets) {
+	if (isFetchingHistories || isFetchingPets ) {
 		return (
-			<MainLayout title="Cliente">
+			<MainLayout title={"Historia clínica de"}>
 				<p>Cargando...</p>
 			</MainLayout>
 		);
 	}
 
-	console.log(pet);
+
 	return (
 		<MainLayout title={`Historia clínica de ${pet.name}`}>
         <ul className="list-disc list-inside gap-4">
 				{histories.map((history) => (
 					<li className="hover:font-semibold pt-2 last:pb-2" key={pet.id}>
-						<Link  to={`/pets/${params.id}/history/${history.id}`}>
+						<Link  to={`/pets/${params.id}/histories/${history.slug}`}>
 						{new Date(history.created_at).toLocaleString()}
 						</Link>
 					</li>

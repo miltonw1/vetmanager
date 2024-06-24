@@ -60,7 +60,7 @@ const router = createBrowserRouter([
     element: <PetHistoriesPage />
   },
   {
-    path: '/pets/:id/histories/:id',
+    path: '/pets/:petId/histories/:slug',
     element: <PetHistoryPage />
   },
 
