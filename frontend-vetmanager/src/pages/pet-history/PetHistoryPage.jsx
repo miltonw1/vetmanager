@@ -49,8 +49,6 @@ export default function PetHistoryPage() {
 	}
 
 
-	console.log(history)
-
     return(
         <MainLayout title={`Historia clínica de ${pet.name}`}>
                 <section className="h-[100%] space-y-2 border border-violet-800 p-4">

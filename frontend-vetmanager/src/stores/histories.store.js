@@ -14,7 +14,7 @@ function addSlugsToHistories (histories) {
     const grouped = Map.groupBy(histories, basicSlug)
 
     for (const inDate of grouped.values()) {
-        console.log({ inDate })
+
         inDate[0] = { ...inDate[0], slug: basicSlug(inDate[0]) }
 
         for (let i = 1; i < inDate.length; i++) {
