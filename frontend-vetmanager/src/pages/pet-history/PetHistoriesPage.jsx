@@ -98,6 +98,7 @@ export default function PetHistoriesPage() {
 					weight={modalInfo.weight}
 					diagnosis={modalInfo.diagnosis}
 					observations={modalInfo.observations}
+					onClose={closeModal}
 				/>
 			)}
 
