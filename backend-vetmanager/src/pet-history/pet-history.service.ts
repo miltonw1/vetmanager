@@ -14,7 +14,10 @@ export class PetHistoryService {
 
   findAll(petId: number): Promise<PetHistory[]> {
     return this.prisma.petHistory.findMany({
-      where: { pet_id: petId }
+      where: { pet_id: petId },
+      include: {
+        images: true
+      }
     });
   }
 
