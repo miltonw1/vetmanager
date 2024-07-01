@@ -6,6 +6,7 @@ import { useHistoriesStore } from "@s/histories.store";
 
 import { MainLayout } from "@/layouts/MainLayout";
 import { PetHistoryModal } from "../../components/histories/PetHistoryModal";
+import { PetHistoryItem } from "../../components/histories/PetHistoryItem";
 
 export default function PetHistoriesPage() {
 	const params = useParams();
@@ -72,23 +73,16 @@ export default function PetHistoriesPage() {
 	return (
 		<MainLayout title={`Historia clínica de ${pet.name}`}>
 			<ul className="list-disc list-inside gap-4">
-				{histories.map((history) => (
-					<li
-						className="hover:font-semibold pt-2 last:pb-2"
-						key={history.id}
-						onClick={() =>
-							openModal({
-								name: pet.name,
-								tutor: client.name,
-								weight: history.weight,
-								diagnosis: history.diagnostic,
-								observations: history.observation,
-							})
-						}
-					>
-						{new Date(history.created_at).toLocaleString()},
-					</li>
-				))}
+				{histories.map((history, index) => (
+				<PetHistoryItem
+				key={history.id}
+				expanded={index === 0}
+				history={history}
+				petName={pet.name}
+				tutor={client.name}
+				openModal={openModal}
+				/>
+			))}
 			</ul>
 
 			{modalShow && (

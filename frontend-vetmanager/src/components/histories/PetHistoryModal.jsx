@@ -1,4 +1,4 @@
-import React from "react";
+
 
 export function PetHistoryModal({ name, tutor, weight, diagnosis, observations, onClose }) {
 	return (
