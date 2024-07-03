@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, NotFoundException, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { PetHistory, Prisma } from '@prisma/client';
 import { PetHistoryService } from './pet-history.service';
 import { PetHistoryDto, CreatePetHistoryDto, UpdatePetHistoryDto } from './dto';
+import { FileInterceptor } from '@nestjs/platform-express/';
+import { diskStorage } from 'multer';
+import { extname } from 'path/win32';
 
 function toSchema(data: CreatePetHistoryDto | UpdatePetHistoryDto) {
 	return {
@@ -28,6 +31,7 @@ function fromSchema(schema: PetHistory) {
 @Controller('pets/:pet_id/history')
 export class PetHistoryController {
   constructor(private readonly petHistoryService: PetHistoryService) {}
+
 
   @Post()
   create(@Param('pet_id') petId: string, @Body() data: CreatePetHistoryDto): Promise<PetHistoryDto> {
@@ -65,4 +69,25 @@ export class PetHistoryController {
 			throw new NotFoundException("History not found");
 		}
   }
+  @Post('file')
+  @UseInterceptors(
+    FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './files',
+      filename: (req, file, callback) => {
+
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+
+        const ext = extname(file.originalname);
+
+        const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+
+        callback(null, filename)
+      }
+    })
+  }))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log('file', file);
+  }
+
 }
