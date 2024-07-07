@@ -1,10 +1,14 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, NotFoundException, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { PetHistory, Prisma } from '@prisma/client';
+import { PetHistory, PetHistoryImage, Prisma } from '@prisma/client';
 import { PetHistoryService } from './pet-history.service';
+import { ImageHistoryService } from './image-history.service';
 import { PetHistoryDto, CreatePetHistoryDto, UpdatePetHistoryDto } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express/';
 import { diskStorage } from 'multer';
-import { extname } from 'path/win32';
+import path from 'node:path';
+import fs from 'node:fs';
+
+const IMAGES_PATH = './public/images/histories';
 
 function toSchema(data: CreatePetHistoryDto | UpdatePetHistoryDto) {
 	return {
@@ -21,16 +25,12 @@ function fromSchema(schema: PetHistory) {
 }
 
 
-// shallow
-
-// GET pet/123/history
-// POST pet/123/history
-// GET pet/123/history/456
-
-
 @Controller('pets/:pet_id/history')
 export class PetHistoryController {
-  constructor(private readonly petHistoryService: PetHistoryService) {}
+  constructor(
+    private readonly petHistoryService: PetHistoryService,
+    private readonly imageHistoryService: ImageHistoryService,
+  ) {}
 
 
   @Post()
@@ -69,25 +69,32 @@ export class PetHistoryController {
 			throw new NotFoundException("History not found");
 		}
   }
-  @Post('file')
+
+
+  @Post(':id/images')
   @UseInterceptors(
     FileInterceptor('file', {
     storage: diskStorage({
-      destination: './files',
+      destination: IMAGES_PATH,
       filename: (req, file, callback) => {
 
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
 
-        const ext = extname(file.originalname);
+        const ext = path.extname(file.originalname);
 
-        const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+        const petPath = path.join(IMAGES_PATH, req.params.pet_id);
+        if (!fs.existsSync(petPath)) {
+          fs.mkdirSync(petPath);
+        }
+
+        const filename = path.join(req.params.pet_id, `${uniqueSuffix}${ext}`);
 
         callback(null, filename)
       }
     })
   }))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log('file', file);
+  async uploadFile(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
+    const result = await this.imageHistoryService.create({pet_history_id: Number(id), image_src: file.path} as PetHistoryImage);
+    console.log(result)
   }
-
 }
