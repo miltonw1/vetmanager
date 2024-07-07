@@ -2,15 +2,11 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module'
 import { PetHistoryController } from './pet-history.controller';
 import { PetHistoryService } from './pet-history.service';
-import { MulterModule } from '@nestjs/platform-express';
+import { ImageHistoryService } from './image-history.service';
 
 @Module({
-    imports: [PrismaModule,
-        MulterModule.register({
-			dest: './uploads',
-		  })
-    ],
+    imports: [PrismaModule],
     controllers: [PetHistoryController],
-    providers: [PetHistoryService],
+    providers: [PetHistoryService, ImageHistoryService],
 })
 export class PetHistoryModule {}
