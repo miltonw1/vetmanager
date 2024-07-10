@@ -14,6 +14,8 @@ import { RaceModule } from "./races/races.module";
 import { UsersModule } from "./users/users.module";
 import { SessionModule } from "./session/session.module";
 import { PetHistoryModule } from './pet-history/pet-history.module';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "node:path";
 
 
 @Module({
@@ -23,6 +25,9 @@ import { PetHistoryModule } from './pet-history/pet-history.module';
 			isGlobal: true,
 			validate: EnvConfigValidation,
 		}),
+		ServeStaticModule.forRoot({
+			rootPath: join(__dirname, '..', 'public'),
+		  }),
 		PetsModule,
 		PetHistoryModule,
 		ClientsModule,
