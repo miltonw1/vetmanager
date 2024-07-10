@@ -96,7 +96,7 @@ export default function PetHistoriesPage() {
 				/>
 			)}
 
-			{modalShow && <button onClick={closeModal}>Cerrar Modal</button>}
+
 		</MainLayout>
 	);
 }
