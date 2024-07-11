@@ -18,6 +18,7 @@ export function PetHistoryItem({ expanded, history, petName, tutor, openModal })
 					weight: history.weight,
 					diagnosis: history.diagnostic,
 					observations: history.observation,
+					images: history.images
 				})
 			}
 		>

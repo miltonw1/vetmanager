@@ -92,10 +92,12 @@ export default function PetHistoriesPage() {
 					weight={modalInfo.weight}
 					diagnosis={modalInfo.diagnosis}
 					observations={modalInfo.observations}
+					images={modalInfo.images || []}
 					onClose={closeModal}
 				/>
-			)}
 
+			)}
+			{console.log(histories)}
 
 		</MainLayout>
 	);
