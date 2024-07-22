@@ -7,11 +7,13 @@ import { useHistoriesStore } from "@s/histories.store";
 import { MainLayout } from "@/layouts/MainLayout";
 import { PetHistoryModal } from "../../components/histories/PetHistoryModal";
 import { PetHistoryItem } from "../../components/histories/PetHistoryItem";
+import { CreateHistoryModal } from "../../components/histories/CreateHistoryModal";
 
 export default function PetHistoriesPage() {
 	const params = useParams();
 	const [modalShow, setModalShow] = useState(false);
 	const [modalInfo, setModalInfo] = useState({});
+	const [creationModalShow, setCreationModalShow] = useState(false);
 
 	const openModal = (info) => {
 		setModalInfo(info);
@@ -21,6 +23,10 @@ export default function PetHistoriesPage() {
 	const closeModal = () => {
 		setModalShow(false);
 		setModalInfo({});
+	};
+
+	const openCreationModal = () => {
+		setCreationModalShow(true);
 	};
 
 	const pets = usePetStore((store) => store.pets);
@@ -37,7 +43,6 @@ export default function PetHistoriesPage() {
 	const historiesRequest = useHistoriesStore((store) => store.request);
 	const getAllHistories = useHistoriesStore((store) => store.getAll);
 	const history = histories.find((x) => x.id === parseInt(params.id));
-
 
 	useEffect(() => {
 		if (pets.length === 0) {
@@ -61,7 +66,6 @@ export default function PetHistoriesPage() {
 	const isFetchingPets = petsRequest.idle || petsRequest.fetching;
 	const isFetchingHistories = historiesRequest.idle || historiesRequest.fetching;
 
-
 	if (isFetchingHistories || isFetchingPets || isFetchingClients) {
 		return (
 			<MainLayout title={"Historia clínica de"}>
@@ -72,17 +76,20 @@ export default function PetHistoriesPage() {
 
 	return (
 		<MainLayout title={`Historia clínica de ${pet.name}`}>
+			<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
+				Nueva historia
+			</button>
 			<ul className="list-disc list-inside gap-4">
 				{histories.map((history, index) => (
-				<PetHistoryItem
-				key={history.id}
-				expanded={index === 0}
-				history={history}
-				petName={pet.name}
-				tutor={client.name}
-				openModal={openModal}
-				/>
-			))}
+					<PetHistoryItem
+						key={history.id}
+						expanded={index === 0}
+						history={history}
+						petName={pet.name}
+						tutor={client.name}
+						openModal={openModal}
+					/>
+				))}
 			</ul>
 
 			{modalShow && (
@@ -95,10 +102,9 @@ export default function PetHistoriesPage() {
 					images={modalInfo.images || []}
 					onClose={closeModal}
 				/>
-
 			)}
-			{console.log(histories)}
 
+			{creationModalShow && <CreateHistoryModal/>}
 		</MainLayout>
 	);
 }
