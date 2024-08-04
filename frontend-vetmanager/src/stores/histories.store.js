@@ -1,86 +1,92 @@
-import { create } from 'zustand'
-import { mountStoreDevtool } from 'simple-zustand-devtools';
+import { create } from "zustand";
+import { mountStoreDevtool } from "simple-zustand-devtools";
 import * as historiesServices from "../services/histories.services";
-import format from "date-fns/format"
+import format from "date-fns/format";
 
 function basicSlug(history) {
-    const date = new Date(history.created_at)
+	const date = new Date(history.created_at);
 
-    return format(date, "yyyy-MM-dd")
+	return format(date, "yyyy-MM-dd");
 }
 
-function addSlugsToHistories (histories) {
-    const order = histories.map(basicSlug);
-    const grouped = Map.groupBy(histories, basicSlug)
+function addSlugsToHistories(histories) {
+	const order = histories.map(basicSlug);
+	const grouped = Map.groupBy(histories, basicSlug);
 
-    for (const inDate of grouped.values()) {
+	for (const inDate of grouped.values()) {
+		inDate[0] = { ...inDate[0], slug: basicSlug(inDate[0]) };
 
-        inDate[0] = { ...inDate[0], slug: basicSlug(inDate[0]) }
+		for (let i = 1; i < inDate.length; i++) {
+			const slug = `${basicSlug(inDate[i])}-${i + 1}`;
 
-        for (let i = 1; i < inDate.length; i++) {
-            const slug = `${basicSlug(inDate[i])}-${i + 1}`
+			inDate[i] = { ...inDate[i], slug };
+		}
+	}
 
-            inDate[i] = { ...inDate[i], slug }
-        }
-    }
+	const alreadyTaken = new Set();
+	let rebuiltHistories = [];
 
-    const alreadyTaken = new Set()
-    let rebuiltHistories = []
+	for (const date of order) {
+		if (alreadyTaken.has(date)) continue;
 
-    for (const date of order) {
-        if (alreadyTaken.has(date)) continue
+		alreadyTaken.add(date);
+		rebuiltHistories = [...rebuiltHistories, ...grouped.get(date)];
+	}
 
-        alreadyTaken.add(date)
-        rebuiltHistories = [...rebuiltHistories, ...grouped.get(date)]
-    }
-
-    return rebuiltHistories
+	return rebuiltHistories;
 }
-
 
 export const useHistoriesStore = create((set) => {
-    return {
-        histories: [],
-        request: { idle: true },
+	return {
+		histories: [],
+		request: { idle: true },
 
-        getAll: async (petId) => {
-            set({ request: { idle: false, fetching: true } })
+		getAll: async (petId) => {
+			set({ request: { idle: false, fetching: true } });
 
-            const data = await historiesServices.getAll(petId)
+			const data = await historiesServices.getAll(petId);
 
-            set({
-                histories: addSlugsToHistories(data),
-                request: { idle: false, fetching: false }
-            });
-        },
+			set({
+				histories: addSlugsToHistories(data),
+				request: { idle: false, fetching: false },
+			});
+		},
 
+		create: async (newHistory) => {
+			const data = await historiesService.create(newHistory);
 
-        create: async (newHistory) => {
-            const data = await historiesService.create(newHistory)
+			set((state) => ({ histories: [...state.histories, data] }));
+		},
 
-            set((state) => ({ histories: [...state.histories, data] }))
-        },
+		update: async (payload) => {
+			const data = await historiesService.update(payload);
 
-        update: async (payload) => {
-            const data = await historiesService.update(payload)
+			set((state) => {
+				const index = state.history((x) => x.id === data.id);
 
-            set((state) => {
-                const index = state.history(x => x.id === data.id)
+				if (index !== -1) {
+					return {
+						histories: [...state.histories.slice(index), data, ...state.histories.slice(index + 1)],
+					};
+				}
+			});
+		},
+		uploadImage: async (petId, historyId, payload) => {
+			const ok = await historiesServices.uploadImage(petId, historyId, payload);
+			if (ok) {
+				set({ request: { idle: false, fetching: true } });
 
-                if (index !== -1) {
-                    return {
-                        histories: [
-                            ...state.histories.slice(index),
-                            data,
-                            ...state.histories.slice(index + 1)
-                        ]
-                    }
-                }
-            })
-        },
-    }
-})
+				const data = await historiesServices.getAll(petId);
 
-if (process.env.NODE_ENV !== 'production') {
-    mountStoreDevtool('Histories', useHistoriesStore)
+				set({
+					histories: addSlugsToHistories(data),
+					request: { idle: false, fetching: false },
+				});
+			}
+		},
+	};
+});
+
+if (process.env.NODE_ENV !== "production") {
+	mountStoreDevtool("Histories", useHistoriesStore);
 }

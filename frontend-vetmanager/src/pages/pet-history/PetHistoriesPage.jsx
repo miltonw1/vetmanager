@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { usePetStore } from "@s/pets.store";
 import { useClientStore } from "@s/clients.store";
@@ -11,18 +11,19 @@ import { CreateHistoryModal } from "../../components/histories/CreateHistoryModa
 
 export default function PetHistoriesPage() {
 	const params = useParams();
-	const [modalShow, setModalShow] = useState(false);
-	const [modalInfo, setModalInfo] = useState({});
+	const [modalInfo, setModalInfo] = useState(null);
 	const [creationModalShow, setCreationModalShow] = useState(false);
 
 	const openModal = (info) => {
 		setModalInfo(info);
-		setModalShow(true);
 	};
 
+	const modalShow = useMemo( ()=>{
+		return !!modalInfo;
+	}, [modalInfo])
+
 	const closeModal = () => {
-		setModalShow(false);
-		setModalInfo({});
+		setModalInfo(null);
 	};
 
 	const openCreationModal = () => {
@@ -94,6 +95,8 @@ export default function PetHistoriesPage() {
 
 			{modalShow && (
 				<PetHistoryModal
+					petId={modalInfo.petId}
+					historyId={modalInfo.historyId}
 					name={modalInfo.name}
 					tutor={modalInfo.tutor}
 					weight={modalInfo.weight}
