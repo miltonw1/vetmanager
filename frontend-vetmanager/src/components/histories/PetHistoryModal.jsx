@@ -16,8 +16,8 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 	}
 
 	function handleInputChange(event) {
-		const file = event.target.files[0]
-		uploadImage(petId, historyId, file)
+		const file = event.target.files[0];
+		uploadImage(petId, historyId, file);
 		console.log(file);
 	}
 
@@ -52,32 +52,43 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 						{observations}
 					</p>
 				</div>
-				<div>
-					<HistoriesCarousel images={images} />
-					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-					<button onClick={handleUpload} className="bg-gray-800 text-white p-2 rounded hover:bg-red-800">
-						subir archivo
-					</button>
-					<input
-						ref={uploadRef}
-						onChange={handleInputChange}
-						className="hidden"
-						name="Upload"
-						type="file"
-						format="image/*"
-					/>
-					<button onClick={handleCamera} className="bg-gray-800 text-white p-2 rounded hover:bg-red-800">
-						subir camarita
-					</button>
-					<input
-						ref={cameraRef}
-						onChange={handleInputChange}
-						capture="environment"
-						className="hidden"
-						name="cameraUpload"
-						type="file"
-						format="image/*"
-					/>
+				<div className="flex w-full h-full justify-center overflow-hidden">
+					<div id="carousel-container" className="flex-1 overflow-x-scroll whitespace-nowrap">
+						<HistoriesCarousel images={images} />
+					</div>
+					<div className="flex flex-col items-center gap-2 ml-4">
+						<button onClick={handleUpload} className="bg-gray-800 text-white p-4 rounded hover:bg-red-800">
+							<img
+								src="/icons/folder_open_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"
+								alt="Subir archivo"
+								className="w-6 h-6"
+							/>
+						</button>
+						<input
+							ref={uploadRef}
+							onChange={handleInputChange}
+							className="hidden"
+							name="Upload"
+							type="file"
+							format="image/*"
+						/>
+						<button onClick={handleCamera} className="bg-gray-800 text-white p-4 rounded hover:bg-red-800">
+							<img
+								src="/icons/photo_camera_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"
+								alt="Subir archivo"
+								className="w-6 h-6"
+							/>
+						</button>
+						<input
+							ref={cameraRef}
+							onChange={handleInputChange}
+							capture="environment"
+							className="hidden"
+							name="cameraUpload"
+							type="file"
+							format="image/*"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
