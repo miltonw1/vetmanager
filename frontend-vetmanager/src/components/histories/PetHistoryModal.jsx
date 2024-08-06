@@ -18,7 +18,6 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 	function handleInputChange(event) {
 		const file = event.target.files[0];
 		uploadImage(petId, historyId, file);
-		console.log(file);
 	}
 
 	return (
