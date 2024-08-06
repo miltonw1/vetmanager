@@ -18,9 +18,9 @@ export default function PetHistoriesPage() {
 		setModalInfo(info);
 	};
 
-	const modalShow = useMemo( ()=>{
+	const modalShow = useMemo(() => {
 		return !!modalInfo;
-	}, [modalInfo])
+	}, [modalInfo]);
 
 	const closeModal = () => {
 		setModalInfo(null);
@@ -107,7 +107,7 @@ export default function PetHistoriesPage() {
 				/>
 			)}
 
-			{creationModalShow && <CreateHistoryModal/>}
+			{creationModalShow && <CreateHistoryModal />}
 		</MainLayout>
 	);
 }
