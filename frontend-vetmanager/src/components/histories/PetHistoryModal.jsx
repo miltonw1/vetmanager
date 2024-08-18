@@ -1,12 +1,24 @@
 import { HistoriesCarousel } from "./HistoriesCarousel";
 import { useHistoriesStore } from "../../stores/histories.store";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
-export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnosis, observations, images, onClose }) {
+export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnosis, observations, onClose }) {
 	const uploadRef = useRef(null);
 	const cameraRef = useRef(null);
 
 	const uploadImage = useHistoriesStore((store) => store.uploadImage);
+
+	const histories = useHistoriesStore((store) => store.histories);
+	const historiesRequest = useHistoriesStore((store) => store.request);
+	const getAllHistories = useHistoriesStore((store) => store.getAll);
+	const history = histories.find((x) => x.id === parseInt(historyId));
+
+	useEffect(() => {
+		if (histories.length === 0) {
+			getAllHistories(petId);
+		}
+	}, [histories, getAllHistories, petId]);
+
 
 	function handleUpload() {
 		uploadRef?.current?.click();
@@ -19,6 +31,19 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 		const file = event.target.files[0];
 		uploadImage(petId, historyId, file);
 	}
+
+	const isFetchingHistories = historiesRequest.idle || historiesRequest.fetching;
+
+
+
+	if (isFetchingHistories) {
+		return (
+			<MainLayout title={"Historia clínica de"}>
+				<p>Cargando...</p>
+			</MainLayout>
+		);
+	}
+
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
@@ -53,7 +78,11 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 				</div>
 				<div className="flex w-full h-full justify-center overflow-hidden">
 					<div id="carousel-container" className="flex-1 overflow-x-scroll whitespace-nowrap">
-						<HistoriesCarousel images={images} />
+					{history?.images ? (
+							<HistoriesCarousel images={history.images} />
+						) : (
+							<p>Cargando imágenes...</p>
+						)}
 					</div>
 					<div className="flex flex-col items-center gap-2 ml-4">
 						<button onClick={handleUpload} className="bg-gray-800 text-white p-4 rounded hover:bg-red-800">

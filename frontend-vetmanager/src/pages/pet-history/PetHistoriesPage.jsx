@@ -67,6 +67,8 @@ export default function PetHistoriesPage() {
 	const isFetchingPets = petsRequest.idle || petsRequest.fetching;
 	const isFetchingHistories = historiesRequest.idle || historiesRequest.fetching;
 
+
+
 	if (isFetchingHistories || isFetchingPets || isFetchingClients) {
 		return (
 			<MainLayout title={"Historia clínica de"}>
