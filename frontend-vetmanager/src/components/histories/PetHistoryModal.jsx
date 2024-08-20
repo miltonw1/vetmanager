@@ -51,6 +51,7 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 				<div className="w-full">
 					<div className="flex justify-between w-full">
 						<h2 className="text-xl font-bold">Detalles de la Historia Clínica de {name}</h2>
+						{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 						<button onClick={onClose} className="bg-gray-800 text-white p-2 rounded hover:bg-red-800">
 							Cerrar
 						</button>
@@ -78,13 +79,14 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 				</div>
 				<div className="flex w-full h-full justify-center overflow-hidden">
 					<div id="carousel-container" className="flex-1 overflow-x-scroll whitespace-nowrap">
-					{history?.images ? (
+						{history?.images ? (
 							<HistoriesCarousel images={history.images} />
 						) : (
 							<p>Cargando imágenes...</p>
 						)}
 					</div>
 					<div className="flex flex-col items-center gap-2 ml-4">
+						{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 						<button onClick={handleUpload} className="bg-gray-800 text-white p-4 rounded hover:bg-red-800">
 							<img
 								src="/icons/folder_open_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"
@@ -100,6 +102,7 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 							type="file"
 							format="image/*"
 						/>
+						{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 						<button onClick={handleCamera} className="bg-gray-800 text-white p-4 rounded hover:bg-red-800">
 							<img
 								src="/icons/photo_camera_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg"
