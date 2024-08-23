@@ -14,7 +14,6 @@ export default function ClientsListPage() {
     useEffect(() => {
         getAll()
     }, [getAll])
-    console.log(filterClient)
 
 
     let clientCards;
