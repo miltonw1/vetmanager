@@ -14,6 +14,10 @@ export default function PetHistoriesPage() {
 	const [modalInfo, setModalInfo] = useState(null);
 	const [creationModalShow, setCreationModalShow] = useState(false);
 
+	const [petsFetchAttempted, setPetsFetchAttempted] = useState(false);
+	const [clientsFetchAttempted, setClientsFetchAttempted] = useState(false);
+	const [historiesFetchAttempted, setHistoriesFetchAttempted] = useState(false);
+
 	const openModal = (info) => {
 		setModalInfo(info);
 	};
@@ -45,31 +49,38 @@ export default function PetHistoriesPage() {
 	const getAllHistories = useHistoriesStore((store) => store.getAll);
 	const history = histories.find((x) => x.id === parseInt(params.id));
 
+
+	// Fetch de mascotas
 	useEffect(() => {
-		if (pets.length === 0) {
+		if (pets.length === 0 && !petsFetchAttempted) {
 			getAllPets();
+			setPetsFetchAttempted(true);
 		}
-	}, [pets, getAllPets]);
+	}, [pets, getAllPets, petsFetchAttempted]);
 
+	// Fetch de clientes
 	useEffect(() => {
-		if (clients.length === 0) {
+		if (clients.length === 0 && !clientsFetchAttempted) {
 			getAll();
+			setClientsFetchAttempted(true);
 		}
-	}, [clients, getAll]);
+	}, [clients, getAll, clientsFetchAttempted]);
 
+	// Fetch de historias
 	useEffect(() => {
-		if (histories.length === 0) {
+		if (histories.length === 0 && !historiesFetchAttempted) {
 			getAllHistories(params.id);
+			setHistoriesFetchAttempted(true);
 		}
-	}, [histories, getAllHistories, params.id]);
+	}, [histories, getAllHistories, params.id, historiesFetchAttempted]);
 
-	const isFetchingClients = clientsRequest.idle || clientsRequest.fetching;
-	const isFetchingPets = petsRequest.idle || petsRequest.fetching;
-	const isFetchingHistories = historiesRequest.idle || historiesRequest.fetching;
+	const isFetchingClients = clientsRequest.fetching;
+	const isFetchingPets = petsRequest.fetching;
+	const isFetchingHistories =  historiesRequest.fetching;
 
 
 
-	if (isFetchingHistories || isFetchingPets || isFetchingClients) {
+	if (isFetchingHistories || isFetchingPets || isFetchingClients || !pet) {
 		return (
 			<MainLayout title={"Historia clínica de"}>
 				<p>Cargando...</p>
@@ -77,6 +88,17 @@ export default function PetHistoriesPage() {
 		);
 	}
 
+
+	if (histories.length === 0 && !isFetchingHistories && !isFetchingPets) {
+		return (
+		<MainLayout title={`Historia clínica de ${pet.name}`}>
+			<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
+				Nueva historia
+			</button>
+		  <h1>{pet.name} no posee ninguna historia creada</h1>
+		  </MainLayout>
+		);
+	  }
 	return (
 		<MainLayout title={`Historia clínica de ${pet.name}`}>
 			<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
