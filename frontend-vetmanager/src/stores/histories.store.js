@@ -53,13 +53,13 @@ export const useHistoriesStore = create((set) => {
 		},
 
 		create: async (newHistory) => {
-			const data = await historiesService.create(newHistory);
+			const data = await historiesServices.create(newHistory);
 
 			set((state) => ({ histories: [...state.histories, data] }));
 		},
 
 		update: async (payload) => {
-			const data = await historiesService.update(payload);
+			const data = await historiesServices.update(payload);
 
 			set((state) => {
 				const index = state.history((x) => x.id === data.id);
