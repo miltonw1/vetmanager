@@ -34,6 +34,10 @@ export default function PetHistoriesPage() {
 		setCreationModalShow(true);
 	};
 
+	const closeCreationModal = () => {
+		setCreationModalShow(false);
+	};
+
 	const pets = usePetStore((store) => store.pets);
 	const petsRequest = usePetStore((store) => store.request);
 	const getAllPets = usePetStore((store) => store.getAll);
@@ -76,7 +80,7 @@ export default function PetHistoriesPage() {
 
 	const isFetchingClients = clientsRequest.fetching;
 	const isFetchingPets = petsRequest.fetching;
-	const isFetchingHistories =  historiesRequest.fetching;
+	const isFetchingHistories = historiesRequest.fetching;
 
 
 
@@ -91,14 +95,14 @@ export default function PetHistoriesPage() {
 
 	if (histories.length === 0 && !isFetchingHistories && !isFetchingPets) {
 		return (
-		<MainLayout title={`Historia clínica de ${pet.name}`}>
-			<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
-				Nueva historia
-			</button>
-		  <h1>{pet.name} no posee ninguna historia creada</h1>
-		  </MainLayout>
+			<MainLayout title={`Historia clínica de ${pet.name}`}>
+				<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
+					Nueva historia
+				</button>
+				<h1>{pet.name} no posee ninguna historia creada</h1>
+			</MainLayout>
 		);
-	  }
+	}
 	return (
 		<MainLayout title={`Historia clínica de ${pet.name}`}>
 			<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
@@ -131,7 +135,10 @@ export default function PetHistoriesPage() {
 				/>
 			)}
 
-			{creationModalShow && <CreateHistoryModal />}
+			{creationModalShow && (<CreateHistoryModal
+				pet={pet}
+				onClose={closeCreationModal}
+			/>)}
 		</MainLayout>
 	);
 }
