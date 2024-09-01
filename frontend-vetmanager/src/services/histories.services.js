@@ -20,8 +20,9 @@ export async function getAll(id) {
 
 export async function create(payload) {
     const body = JSON.stringify(payload)
+    const pet_id = payload.pet_id
 
-    const response = await fetch(URL, { method: 'POST', headers: baseHeaders, body })
+    const response = await fetch(`${BASE_URL}/pets/${pet_id}/history`, { method: 'POST', headers: baseHeaders, body })
 
     const data = await response.json()
     return data
