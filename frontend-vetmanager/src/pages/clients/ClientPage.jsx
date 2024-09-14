@@ -5,19 +5,16 @@ import { usePetStore } from "@s/pets.store";
 import { useClientStore } from "@s/clients.store";
 
 import { MainLayout } from "@/layouts/MainLayout";
-import { PetSection } from "../../components/clients/PetSection";
+import { PetCard } from "@/components/pets/PetCard.jsx";
 
-export default function ClientPage({ children }) {
+export default function ClientPage() {
 	const params = useParams();
 
 	const clients = useClientStore((store) => store.clients);
-	const clientsRequest = useClientStore((store) => store.request);
 	const getAll = useClientStore((store) => store.getAll);
 	const client = clients.find((x) => x.id === parseInt(params.id));
 
-
 	const pets = usePetStore((store) => store.pets);
-	const petsRequest = usePetStore((store) => store.request);
 	const getAllPets = usePetStore((store) => store.getAll);
 	const clientPets = client ? pets.filter((x) => x.client_id === parseInt(params.id)) : null;
 
@@ -33,30 +30,22 @@ export default function ClientPage({ children }) {
 		}
 	}, [pets, getAllPets]);
 
-	const isFetchingClients = clientsRequest.idle || clientsRequest.fetching;
-	const isFetchingPets = petsRequest.idle || petsRequest.fetching;
-
-	if (isFetchingClients || isFetchingPets) {
-		return (
-			<MainLayout title="Cliente">
-				<p>Cargando...</p>
-			</MainLayout>
-		);
+	if (!client || !clientPets) {
+		return <p>Cargando...</p>;
 	}
 
-	if (!client) {
-		return (
-			<MainLayout title="Cliente">
-				<p>Cliente no encontrado</p>
-			</MainLayout>
-		);
-	}
 
+	const petCards = clientPets.map((pet) => (
+		<Link key={pet.id} to={`/pets/${pet.id}`}>
+			<PetCard name={pet.name} {...pet} />
+		</Link>
+	));
+	//const clientCards = clients.map(client => (<Link to={`/clients/${client.id}`}><ClientCard key={client.id} {...client} /></Link>))
 
 	return (
 		<MainLayout title="Cliente">
 			<div className="grid grid-col-2 space-y-4">
-				<section className="h-[100%] space-y-2 p-4">
+				<section className="h-[100%] space-y-2 border border-violet-800 p-4">
 					<h3>Información del cliente</h3>
 					{client?.debt && (
 						<p className="text-red-500">
@@ -87,11 +76,22 @@ export default function ClientPage({ children }) {
 					{client?.debt && (
 						<p className="text-red-500">
 							<strong>Adeuda:</strong>&nbsp;
+							{clientPets.map((pet) => (
+								<PetCard name={pet.name} />
+							))}
 						</p>
 					)}
 				</section>
 
-				<PetSection pets={clientPets}/>
+				<section className="h-[100%] border border-violet-800">
+					<h4>Mascotas</h4>
+					<ul>
+						{/* {clientPets.map((pet) => (
+                            <Link to={`/pets/${pet.id}`}><li key={pet.id}>{pet.name}</li></Link>
+                        ))} */}
+						{petCards}
+					</ul>
+				</section>
 			</div>
 		</MainLayout>
 	);
