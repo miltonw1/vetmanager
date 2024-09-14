@@ -1,39 +1,10 @@
 import { create } from "zustand";
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import * as historiesServices from "../services/histories.services";
-import format from "date-fns/format";
+import compareDesc from "date-fns/compareDesc";
 
-function basicSlug(history) {
-	const date = new Date(history.created_at);
-
-	return format(date, "yyyy-MM-dd");
-}
-
-function addSlugsToHistories(histories) {
-	const order = histories.map(basicSlug);
-	const grouped = Map.groupBy(histories, basicSlug);
-
-	for (const inDate of grouped.values()) {
-		inDate[0] = { ...inDate[0], slug: basicSlug(inDate[0]) };
-
-		for (let i = 1; i < inDate.length; i++) {
-			const slug = `${basicSlug(inDate[i])}-${i + 1}`;
-
-			inDate[i] = { ...inDate[i], slug };
-		}
-	}
-
-	const alreadyTaken = new Set();
-	let rebuiltHistories = [];
-
-	for (const date of order) {
-		if (alreadyTaken.has(date)) continue;
-
-		alreadyTaken.add(date);
-		rebuiltHistories = [...rebuiltHistories, ...grouped.get(date)];
-	}
-
-	return rebuiltHistories;
+function orderCriteria (historyA, historyB) {
+	return compareDesc(new Date(historyA.created_at), new Date(historyB.created_at))
 }
 
 export const useHistoriesStore = create((set) => {
@@ -47,7 +18,7 @@ export const useHistoriesStore = create((set) => {
 			const data = await historiesServices.getAll(petId);
 
 			set({
-				histories: addSlugsToHistories(data),
+				histories: data.toSorted(orderCriteria),
 				request: { idle: false, fetching: false },
 			});
 		},
@@ -55,7 +26,7 @@ export const useHistoriesStore = create((set) => {
 		create: async (newHistory) => {
 			const data = await historiesServices.create(newHistory);
 
-			set((state) => ({ histories: [...state.histories, data] }));
+			set((state) => ({ histories: [...state.histories, data].toSorted(orderCriteria) }));
 		},
 
 		update: async (payload) => {
@@ -71,6 +42,7 @@ export const useHistoriesStore = create((set) => {
 				}
 			});
 		},
+
 		uploadImage: async (petId, historyId, payload) => {
 			const ok = await historiesServices.uploadImage(petId, historyId, payload);
 			if (ok) {
@@ -79,7 +51,7 @@ export const useHistoriesStore = create((set) => {
 				const data = await historiesServices.getAll(petId);
 
 				set({
-					histories: addSlugsToHistories(data),
+					histories: data.toSorted(orderCriteria),
 					request: { idle: false, fetching: false },
 				});
 			}
