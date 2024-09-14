@@ -54,6 +54,8 @@ export default function PetHistoriesPage() {
 	const history = histories.find((x) => x.id === parseInt(params.id));
 
 
+	const title = useMemo(() => pet?.name ? `Historia clínica de ${pet.name}` : "Historia clínica", [pet]);
+
 	// Fetch de mascotas
 	useEffect(() => {
 		if (pets.length === 0 && !petsFetchAttempted) {
@@ -72,7 +74,7 @@ export default function PetHistoriesPage() {
 
 	// Fetch de historias
 	useEffect(() => {
-		if (histories.length === 0 && !historiesFetchAttempted) {
+		if (!historiesFetchAttempted) {
 			getAllHistories(params.id);
 			setHistoriesFetchAttempted(true);
 		}
@@ -82,32 +84,32 @@ export default function PetHistoriesPage() {
 	const isFetchingPets = petsRequest.fetching;
 	const isFetchingHistories = historiesRequest.fetching;
 
-
-
 	if (isFetchingHistories || isFetchingPets || isFetchingClients || !pet) {
 		return (
-			<MainLayout title={"Historia clínica de"}>
+			<MainLayout title={title}>
 				<p>Cargando...</p>
 			</MainLayout>
 		);
 	}
 
+	const openModalBtn = (
+		<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
+			Nueva historia
+		</button>
+	);
 
-	if (histories.length === 0 && !isFetchingHistories && !isFetchingPets) {
+	if (histories.length === 0) {
 		return (
-			<MainLayout title={`Historia clínica de ${pet.name}`}>
-				<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
-					Nueva historia
-				</button>
+			<MainLayout title={title}>
+				{openModalBtn}
 				<h1>{pet.name} no posee ninguna historia creada</h1>
 			</MainLayout>
 		);
 	}
+
 	return (
-		<MainLayout title={`Historia clínica de ${pet.name}`}>
-			<button className="bg-cyan-800 text-white p-2 rounded hover:bg-red-800" onClick={openCreationModal}>
-				Nueva historia
-			</button>
+		<MainLayout title={title}>
+			{openModalBtn}
 			<ul className="list-disc list-inside gap-4">
 				{histories.map((history, index) => (
 					<PetHistoryItem
