@@ -37,6 +37,9 @@ export default function ClientPage() {
 	if (!client || !clientPets) {
 		return <p>Cargando...</p>;
 	}
+	const closeCreationModal = () => {
+		setDebtModalShow(false);
+	};
 
 
 	const petCards = clientPets.map((pet) => (
@@ -45,22 +48,30 @@ export default function ClientPage() {
 		</Link>
 	));
 	//const clientCards = clients.map(client => (<Link to={`/clients/${client.id}`}><ClientCard key={client.id} {...client} /></Link>))
-	console.log(debtModalShow)
+
 	return (
 		<MainLayout title="Cliente">
 			<div className="grid grid-col-2 space-y-4">
 				<section className="h-[100%] space-y-2 border border-violet-800 p-4">
 					<h3>Información del cliente</h3>
-					{client?.debt && (
+					{client?.debt && client.debt !== 0 ? (
 						<p className="text-red-500">
 							<strong>Este cliente tiene una deuda ❗</strong>&nbsp;
 						</p>
-					)}
+					) : null}
 					{client?.debt && (
 						<p className="text-red-500">
 							<strong>Adeuda: {client.debt}</strong>&nbsp;
 							<button onClick={handleDebtModalShow} className="text-red-500 underline">
 								Reducir/Cancelar deuda
+							</button>
+						</p>
+					)}
+					{client?.debt === "0" && (
+						<p className="text-red-500">
+							{/* <strong>Adeuda: {client.debt}</strong>&nbsp; */}
+							<button onClick={handleDebtModalShow} className="text-red-500 underline">
+								Agregar deuda
 							</button>
 						</p>
 					)}
@@ -84,9 +95,12 @@ export default function ClientPage() {
 						<strong>Ciudad:</strong>&nbsp;
 						{client?.city}
 					</p>
-				{debtModalShow && (
-					<DebtModal client={client} />
-				)}
+					{debtModalShow && (
+						<DebtModal
+							client={client}
+							onClose={closeCreationModal}
+						/>
+					)}
 				</section>
 
 				<section className="h-[100%] border border-violet-800">
