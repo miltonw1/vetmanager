@@ -2,7 +2,7 @@ import { TextInput } from "../common/inputs/TextInput";
 import { useHistoriesStore } from "@s/histories.store";
 import { useState } from "react";
 
-export function CreateHistoryModal({ pet, onClose, onChange }) {
+export function CreateHistoryModal({ pet, onClose }) {
 	const [newHistory, setNewHistory] = useState({
 		diagnostic: '',
 		observation: '',
