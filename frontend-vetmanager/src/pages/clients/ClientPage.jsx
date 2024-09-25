@@ -54,19 +54,19 @@ export default function ClientPage() {
 			<div className="grid grid-col-2 space-y-4">
 				<section className="h-[100%] space-y-2 border border-violet-800 p-4">
 					<h3>Información del cliente</h3>
-					{client?.debt && client.debt !== 0 ? (
+					{client?.debt && client.debt !== "0" ? (
+						<div>
 						<p className="text-red-500">
 							<strong>Este cliente tiene una deuda ❗</strong>&nbsp;
 						</p>
-					) : null}
-					{client?.debt && (
 						<p className="text-red-500">
-							<strong>Adeuda: {client.debt}</strong>&nbsp;
-							<button onClick={handleDebtModalShow} className="text-red-500 underline">
-								Reducir/Cancelar deuda
-							</button>
-						</p>
-					)}
+						<strong>Adeuda: {client.debt}</strong>&nbsp;-&nbsp;
+						<button onClick={handleDebtModalShow} className="text-red-500 underline">
+							Reducir/Cancelar deuda
+						</button>
+					</p>
+					</div>
+					) : null}
 					{client?.debt === "0" && (
 						<p className="text-red-500">
 							{/* <strong>Adeuda: {client.debt}</strong>&nbsp; */}
