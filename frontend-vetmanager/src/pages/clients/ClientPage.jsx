@@ -11,6 +11,7 @@ import { DebtModal } from "@/components/clients/DebtModal";
 export default function ClientPage() {
 	const params = useParams();
 	const [debtModalShow, setDebtModalShow] = useState(false);
+	const [editClient, setEditClient] = useState();
 
 	const clients = useClientStore((store) => store.clients);
 	const getAll = useClientStore((store) => store.getAll);
@@ -56,16 +57,16 @@ export default function ClientPage() {
 					<h3>Información del cliente</h3>
 					{client?.debt && client.debt !== "0" ? (
 						<div>
-						<p className="text-red-500">
-							<strong>Este cliente tiene una deuda ❗</strong>&nbsp;
-						</p>
-						<p className="text-red-500">
-						<strong>Adeuda: {client.debt}</strong>&nbsp;-&nbsp;
-						<button onClick={handleDebtModalShow} className="text-red-500 underline">
-							Reducir/Cancelar deuda
-						</button>
-					</p>
-					</div>
+							<p className="text-red-500">
+								<strong>Este cliente tiene una deuda ❗</strong>&nbsp;
+							</p>
+							<p className="text-red-500">
+								<strong>Adeuda: {client.debt}</strong>&nbsp;-&nbsp;
+								<button onClick={handleDebtModalShow} className="text-red-500 underline">
+									Reducir/Cancelar deuda
+								</button>
+							</p>
+						</div>
 					) : null}
 					{client?.debt === "0" && (
 						<p className="text-red-500">
@@ -99,6 +100,7 @@ export default function ClientPage() {
 						<DebtModal
 							client={client}
 							onClose={closeCreationModal}
+							onChange={setEditClient}
 						/>
 					)}
 				</section>
