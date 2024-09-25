@@ -26,21 +26,23 @@ export const useClientStore = create((set) => {
         },
 
         update: async (payload) => {
-            const data = await clientsService.update(payload)
+            const data = await clientsService.update(payload); // Actualiza el cliente en el backend
 
             set((state) => {
-                const index = state.client(x => x.id === data.id)
+                const index = state.clients.findIndex(x => x.id === data.id); // Cambia a state.clients
 
                 if (index !== -1) {
                     return {
                         clients: [
-                            ...state.clients.slice(index),
-                            data,
-                            ...state.clients.slice(index + 1)
+                            ...state.clients.slice(0, index), // Obtiene los anteriores
+                            data, // Inserta el cliente actualizado
+                            ...state.clients.slice(index + 1) // Obtiene el resto de los clientes
                         ]
-                    }
+                    };
                 }
-            })
+
+                return state; // Retorna el estado si no se actualiza nada
+            });
         },
     }
 })
