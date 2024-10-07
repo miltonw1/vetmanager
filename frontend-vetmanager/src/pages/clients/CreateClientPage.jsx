@@ -8,8 +8,11 @@ import { ClientForm } from '../../components/clients/ClientForm';
 
 export default function CreateClientPage() {
     const [newClient, setNewClient] = useState({})
-	const create = useClientStore((store) => store.create);
+
+
+    const create = useClientStore((store) => store.create);
     const navigate = useNavigate()
+
 
     function onSave() {
         create(newClient).then(() => {

@@ -46,7 +46,8 @@ export default function ClientsListPage() {
                 onChange={event => setFilterClient(event.target.value)}
             />
              <Link to={`/clients/create`}>
-            <button
+            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+<button
                 className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60"
             >
                 Nuevo Cliente
