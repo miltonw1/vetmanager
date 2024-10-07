@@ -45,9 +45,13 @@ export default function ClientPage() {
 		return <p>Cargando...</p>;
 	}
 
-	const closeCreationModal = () => {
+	const closeDebtCreationModal = () => {
 		setDebtModalShow(false);
 	};
+
+	const closePetCreationModal = () => {
+		setPetCreationModalShow(false);
+	}
 
 	const petCards = clientPets.map((pet) => (
 		<Link key={pet.id} to={`/pets/${pet.id}`}>
@@ -107,13 +111,13 @@ export default function ClientPage() {
 					//Debt Modal
 					<DebtModal
 					client={client}
-					onClose={closeCreationModal}
+					onClose={closeDebtCreationModal}
 					onChange={setEditClient} />}
-					//Pet Creation Modal
+
 					{petCreationModalShow &&
 					<PetCreationModal
 					client={client}
-					onClose={closeCreationModal}/> }
+					onClose={closePetCreationModal}/> }
 				</section>
 				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 				<button onClick={handlePetCreationModalShow}
