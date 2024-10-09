@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSpeciesStore } from "@s/species.store";
 import { usePetStore } from "@s/pets.store";
+import { useRaceStore } from "@s/races.store";
 import { TextInput } from "../common/inputs/TextInput";
 import Select from "react-select";
 
@@ -9,22 +10,30 @@ export function PetCreationModal({ client, onClose }) {
 	const [weight, setWeight] = useState("");
 	const [selectedSpecies, setSelectedSpecies] = useState(null);
 	const [selectedGender, setSelectedGender] = useState(null);
+	const [selectedRace, setSelectedRace] = useState(null);
+	const [filteredRaces, setFilteredRaces] = useState([]);
 
-
-	//const getAllSpecies = useSpeciesStore((store) => store.getAll);
+	//Get AllSpecies is called in MainLayout
 	const species = useSpeciesStore((store) => store.species);
 
-	//const pets = usePetStore((store) => store.pets);
+	//Get AllPets is called in Client Page
 	const createPet = usePetStore((store) => store.create);
+
+	const races = useRaceStore((store) => store.races);
 
 	const speciesOptions = species.map((s) => ({
 		value: s.id,
 		label: s.name,
 	}));
 
+	const raceOptions = races.map((r) => ({
+		value: r.id,
+		label: r.name,
+	}));
+
 	const genderOptions = [
-		{ value: 'MALE', label: 'Macho' },
-		{ value: 'FEMALE', label: 'Hembra' },
+		{ value: "MALE", label: "Macho" },
+		{ value: "FEMALE", label: "Hembra" },
 	];
 
 	const onSave = (payload) => {
@@ -33,16 +42,33 @@ export function PetCreationModal({ client, onClose }) {
 		});
 	};
 
+
+	// CHAT GPT A FONDO ACA ABAJO
+	useEffect(() => {
+		if (selectedSpecies) {
+			const filtered = races.filter((race) => {
+				// Aquí verificamos que el ID de la especie seleccionada coincida con el campo id de la raza
+				return race.species_id === selectedSpecies.value;
+			});
+			setFilteredRaces(filtered);
+			setSelectedRace(null); // Resetea la raza seleccionada cuando cambia la especie
+		} else {
+			setFilteredRaces([]); // Limpiar las razas si no hay especie seleccionada
+		}
+	}, [selectedSpecies, races]);
+
+
 	const handleSubmit = () => {
 		const payload = {
 			name,
-			weight: Number(weight), // Convierte el peso a número
+			weight: Number(weight),
 			species_id: selectedSpecies?.value,
+			race_id: selectedRace?.value,
 			genre: selectedGender?.value,
 			client_id: client.id,
 		};
 
-		onSave(payload); // Llama a onSave pasando el payload completo
+		onSave(payload);
 	};
 	const handleCancel = () => {
 		onClose();
@@ -51,54 +77,48 @@ export function PetCreationModal({ client, onClose }) {
 	const customStyles = {
 		control: (provided) => ({
 			...provided,
-			backgroundColor: 'black',
-			borderColor: 'white',
-			color: 'white'
+			backgroundColor: "black",
+			borderColor: "white",
+			color: "white",
 		}),
 		singleValue: (provided) => ({
 			...provided,
-			color: 'white'
+			color: "white",
 		}),
 		menu: (provided) => ({
 			...provided,
-			backgroundColor: 'black'
+			backgroundColor: "black",
 		}),
 		option: (provided, state) => ({
 			...provided,
-			backgroundColor: state.isFocused ? '#333' : 'black',
-			color: 'white',
-			cursor: 'pointer'
+			backgroundColor: state.isFocused ? "#333" : "black",
+			color: "white",
+			cursor: "pointer",
 		}),
 		placeholder: (provided) => ({
 			...provided,
-			color: 'white'
+			color: "white",
 		}),
 		input: (provided) => ({
 			...provided,
-			color: 'white'
-		})
+			color: "white",
+		}),
 	};
-
-
 
 	const handleWeightChange = (event) => {
 		const value = event.target.value;
 		const regex = /^[0-9]*\.?[0-9]*$/;
-		if (regex.test(value) || value === '') {
+		if (regex.test(value) || value === "") {
 			setWeight(value);
 		}
 	};
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-			<div className="bg-cyan-800 h-[50%] w-[25%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
+			<div className="bg-cyan-800 h-[65%] w-[25%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
 				<h1 className="text-3xl text-white">Mascota nueva para {client.name}</h1>
 				<div>
-					<TextInput label="Nombre"
-						className="w-full"
-						value={name}
-						onChange={(event) => setName(event.target.value)}
-					/>
+					<TextInput label="Nombre" className="w-full" value={name} onChange={(event) => setName(event.target.value)} />
 					<TextInput
 						label="Peso"
 						className="w-full"
@@ -114,18 +134,24 @@ export function PetCreationModal({ client, onClose }) {
 						isClearable
 						styles={customStyles}
 					/>
-					<label
-						className="block"
-					>
-						Specie
-					</label>
+					<label className="block">Especie</label>
 					<Select
 						value={selectedSpecies}
 						onChange={setSelectedSpecies}
 						options={speciesOptions}
 						placeholder="Selecciona una especie"
 						isClearable
-						styles={customStyles} // Aplica los estilos personalizados
+						styles={customStyles}
+					/>
+					<label className="block">Raza</label>
+					<Select
+						value={selectedRace}
+						onChange={setSelectedRace}
+						options={filteredRaces.map((r) => ({ value: r.id, label: r.name }))}
+						placeholder="Selecciona una raza"
+						isClearable
+						isDisabled={!selectedSpecies}
+						styles={customStyles}
 					/>
 				</div>
 				<div className="w-full flex justify-between mt-auto">
