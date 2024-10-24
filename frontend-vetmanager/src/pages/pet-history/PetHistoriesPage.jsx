@@ -31,6 +31,7 @@ export default function PetHistoriesPage() {
 	};
 
 	const openCreationModal = () => {
+		console.log("open creation modal");
 		setCreationModalShow(true);
 	};
 
@@ -103,6 +104,12 @@ export default function PetHistoriesPage() {
 			<MainLayout title={title}>
 				{openModalBtn}
 				<h1>{pet.name} no posee ninguna historia creada</h1>
+				{creationModalShow && (
+				<CreateHistoryModal
+					pet={pet}
+					onClose={closeCreationModal}
+				/>
+			)}
 			</MainLayout>
 		);
 	}
@@ -137,10 +144,12 @@ export default function PetHistoriesPage() {
 				/>
 			)}
 
-			{creationModalShow && (<CreateHistoryModal
-				pet={pet}
-				onClose={closeCreationModal}
-			/>)}
+			{creationModalShow && (
+				<CreateHistoryModal
+					pet={pet}
+					onClose={closeCreationModal}
+				/>
+			)}
 		</MainLayout>
 	);
 }
