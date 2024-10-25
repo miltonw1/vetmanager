@@ -39,20 +39,20 @@ export default function ClientsListPage() {
     return (
         <MainLayout title="Clientes">
             <div className="flex justify-between items-center">
-            <TextInput
-                label="Filtrar cliente"
-                className="w-35% my-2"
-                value={filterClient}
-                onChange={event => setFilterClient(event.target.value)}
-            />
-             <Link to={`/clients/create`}>
-            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-<button
-                className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60"
-            >
-                Nuevo Cliente
-            </button>
-            </Link>
+                <TextInput
+                    label="Filtrar cliente"
+                    className="w-35% my-2"
+                    value={filterClient}
+                    onChange={event => setFilterClient(event.target.value)}
+                />
+                <Link to={`/clients/create`}>
+                    {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+                    <button
+                        className="rounded-lg border bg-violet-800 border-white-400 text-white h-12 w-60"
+                    >
+                        Nuevo Cliente
+                    </button>
+                </Link>
             </div>
             <section className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, 360px)' }}>
                 {clientCards}
