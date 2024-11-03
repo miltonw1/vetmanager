@@ -7,6 +7,7 @@ import { UsersModule } from "../users/users.module";
 
 import { SessionService } from "./session.service";
 import { UsersService } from "../users/services/users.service";
+import { PasswordsService } from "../users/services/passwords.service";
 
 import { SessionController } from "./session.controller";
 import { JwtStrategy } from "./strategies/jwt.strategy";
@@ -22,6 +23,6 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 		}),
 	],
 	controllers: [SessionController],
-	providers: [SessionService, UsersService, JwtStrategy],
+	providers: [SessionService, UsersService, PasswordsService, JwtStrategy],
 })
 export class SessionModule {}
