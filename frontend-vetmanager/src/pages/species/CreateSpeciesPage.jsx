@@ -6,7 +6,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 import { SpeciesForm }  from  "@/components/species/SpeciesForm";
 
 
-export default function CreateClientPage() {
+export default function CreateSpeciesPage() {
     const [newSpecies, setNewSpecies] = useState({})
 
 
