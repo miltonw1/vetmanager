@@ -19,8 +19,8 @@ export default function LoginPage() {
     sessionService.login(loginData)
       .then(response => {
         const token = response.access_token;
-        sessionStorage.setItem("token", token); // Guarda el token en sessionStorage
-        //localStorage.setItem("token", token)
+        localStorage.setItem("token", token);
+
         navigate("/clients");
       })
       .catch(error => {
