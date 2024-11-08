@@ -1,10 +1,12 @@
 import style from './LoginLayout.module.css'
+import { useMemo } from 'react';
 import clsx from 'clsx'
 
 export function LoginLayout({ title, children, img }) {
-    const random = Math.ceil(Math.random() * 4)
-
-    const src = `/images/login-${random}.jpg`
+    const src = useMemo(() => {
+        const random = Math.ceil(Math.random() * 4);
+        return `/images/login-${random}.jpg`;
+    }, []);
 
     return (
         <main className={style['login-layout']}>
