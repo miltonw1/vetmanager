@@ -1,32 +1,48 @@
-const URL = `${import.meta.env.VITE_BASE_URL}/races`
-
-
+const URL = `${import.meta.env.VITE_BASE_URL}/races`;
 
 const baseHeaders = {
     Accept: 'application/json',
     'Content-Type': 'application/json'
 }
 
-export async function getAll() {
-    const response = await fetch(URL)
-    const data = await response.json()
+function getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+        ...baseHeaders,
+        Authorization: `Bearer ${token}`,
+    };
+}
 
-    return data
+export async function getAll() {
+    const response = await fetch(URL, {
+        headers: getAuthHeaders(),
+    });
+    const data = await response.json();
+    return data;
 }
 
 export async function create(payload) {
-    const body = JSON.stringify(payload)
+    const body = JSON.stringify(payload);
 
-    const response = await fetch(URL, { method: 'POST', headers: baseHeaders, body })
+    const response = await fetch(URL, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body,
+    });
 
-    const data = await response.json()
-    return data
+    const data = await response.json();
+    return data;
 }
 
 export async function update(payload) {
-    const body = JSON.stringify(payload)
-    const response = await fetch(`${URL}/${payload.id}`, { method: 'PUT', headers: baseHeaders, body })
-    const data = await response.json()
+    const body = JSON.stringify(payload);
 
-    return data
+    const response = await fetch(`${URL}/${payload.id}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body,
+    });
+
+    const data = await response.json();
+    return data;
 }
