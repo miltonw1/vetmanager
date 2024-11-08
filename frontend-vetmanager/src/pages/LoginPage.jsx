@@ -21,13 +21,23 @@ export default function LoginPage() {
         const token = response.access_token;
         localStorage.setItem("token", token);
 
-        navigate("/clients");
+        // Verificar si el token se guardó y luego navegar
+        if (localStorage.getItem("token")) {
+          navigate("/clients");
+        } else {
+          console.error("Error: Token no guardado correctamente.");
+        }
       })
       .catch(error => {
         console.error("Error al iniciar sesión:", error);
       });
   }
 
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //     navigate("/clients");
+  //   }
+  // }, []);
 
   return (
     <LoginLayout>
