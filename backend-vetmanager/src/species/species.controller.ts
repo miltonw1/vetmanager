@@ -1,8 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Put, Post, NotFoundException } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Put, Post, NotFoundException, UseGuards } from "@nestjs/common";
 import { Species } from "@prisma/client";
 import { CreateSpeciesDto, SpeciesDto, UpdateSpeciesDto } from "./dto/species.dto";
 import { SpeciesService } from "./species.service";
+import { JwtAuthGuard } from "../session/guards/jwt.guard";
 
+
+@UseGuards(JwtAuthGuard)
 @Controller("species")
 export class SpeciesController {
 	constructor(private readonly speciesService: SpeciesService) {}

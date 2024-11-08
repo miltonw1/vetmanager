@@ -1,8 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Put, Post, NotFoundException } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Put, Post, NotFoundException, UseGuards } from "@nestjs/common";
 import { Race } from "@prisma/client";
 import { CreateRaceDto, RaceDto, UpdateRaceDto } from "./dto/race.dto";
 import { RaceService } from "./races.service";
 
+import { JwtAuthGuard } from "../session/guards/jwt.guard";
+
+
+@UseGuards(JwtAuthGuard)
 @Controller("races")
 export class RaceController {
 	constructor(private readonly raceService: RaceService) {}

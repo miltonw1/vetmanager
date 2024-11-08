@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Put, Post, NotFoundException } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Put, Post, NotFoundException, UseGuards } from "@nestjs/common";
 import { Pet, Prisma } from "@prisma/client";
 import { CreatePetDto, PetDto, UpdatePetDto } from "./dto/pet.dto";
 import { PetsService } from "./pets.service";
+import { JwtAuthGuard } from "../session/guards/jwt.guard";
+
 
 function toSchema(data: CreatePetDto | UpdatePetDto) {
 	return {
@@ -17,6 +19,7 @@ function fromSchema(schema: Pet) {
 	} as PetDto;
 }
 
+@UseGuards(JwtAuthGuard)
 @Controller("pets")
 export class PetsController {
 	constructor(private readonly petsService: PetsService) {}
