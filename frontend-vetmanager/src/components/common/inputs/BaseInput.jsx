@@ -8,6 +8,7 @@ export function BaseInput ({
     value,
     onChange,
     className,
+    ...props
 }) {
     return (
         <div>
@@ -24,6 +25,7 @@ export function BaseInput ({
                 id={id}
                 value={value}
                 onChange={onChange}
+                {...props}
             />
         </div>
     );

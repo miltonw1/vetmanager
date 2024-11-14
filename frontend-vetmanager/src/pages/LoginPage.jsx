@@ -46,6 +46,7 @@ export default function LoginPage() {
         <form onSubmit={login}  className="flex flex-col items-center justify-center gap-6">
           <TextInput
             className="w-80"
+            data-cy="user-name-field"
             id="username"
             label="Nombre de usuario"
             placeholder="Usuario"
@@ -53,6 +54,7 @@ export default function LoginPage() {
           />
           <PasswordInput
             className="w-80"
+            data-cy="password-field"
             id="password"
             label="Contraseña"
             placeholder="Contraseña"
@@ -61,8 +63,9 @@ export default function LoginPage() {
           <p>Si olvidate la contrasenia sos un mono.</p>
           <p>Royale with cheese</p>
           <button
-            type="submit"
             className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60"
+            data-cy="login-button"
+            type="submit"
           >
             Login
           </button>
