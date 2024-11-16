@@ -24,11 +24,19 @@ export class SessionService {
 			: null
 	}
 
+
 	createSession(user: User) {
 		const payload = { username: user.email, sub: user.id };
+		//Se optiene cuando va a expirar el token sabiendo que va a durar 24 horas
+		const expirationDate = new Date();
+		expirationDate.setDate(expirationDate.getDate() + 1);
+		//Unix Timestamp esta basado en segundos y el getTime esta milisegundos. Vamos a enviar Unix Timestamp para ser mas uniformes por estandares
+		const unixTimestamp = Math.floor(expirationDate.getTime() / 1000);
+		const token =  this.jwtService.sign(payload)
 
 		return {
-			access_token: this.jwtService.sign(payload)
+			access_token: token,
+			exp: unixTimestamp
 		}
 	}
 }
