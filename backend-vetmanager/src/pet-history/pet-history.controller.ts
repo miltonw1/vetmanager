@@ -1,14 +1,18 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, NotFoundException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, NotFoundException, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { PetHistory, PetHistoryImage, Prisma } from '@prisma/client';
 import { PetHistoryService } from './pet-history.service';
 import { ImageHistoryService } from './image-history.service';
 import { PetHistoryDto, CreatePetHistoryDto, UpdatePetHistoryDto } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express/';
 import { diskStorage } from 'multer';
+import { JwtAuthGuard } from "../session/guards/jwt.guard";
 import path from 'node:path';
 import fs from 'node:fs';
 
 const IMAGES_PATH = './public/images/histories';
+
+
+
 
 function toSchema(data: CreatePetHistoryDto | UpdatePetHistoryDto) {
 	return {
@@ -24,7 +28,7 @@ function fromSchema(schema: PetHistory) {
 	} as PetHistoryDto;
 }
 
-
+@UseGuards(JwtAuthGuard)
 @Controller('pets/:pet_id/history')
 export class PetHistoryController {
   constructor(
