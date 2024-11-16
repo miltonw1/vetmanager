@@ -17,7 +17,6 @@ export async function getAll() {
     const response = await fetch(URL, {
         headers: getAuthHeaders(),
     });
-    console.log('response', response.headers);
     const data = await response.json();
     return data;
 }

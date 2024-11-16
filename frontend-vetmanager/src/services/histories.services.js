@@ -6,13 +6,18 @@ const baseHeaders = {
     'Content-Type': 'application/json'
 }
 
-const fileHeaders = {
-    'Content-Type': 'multipart/form-data'
+function getAuthHeaders(base = baseHeaders) {
+    const token = localStorage.getItem('token')
+    return {
+        ...base,
+        Authorization: `Bearer ${token}`,
+    };
 }
 
 //`${BASE_URL}/pets/${id}/history`
 export async function getAll(id) {
-    const response = await fetch(`${BASE_URL}/pets/${id}/history`, { method: 'GET', headers: baseHeaders })
+
+    const response = await fetch(`${BASE_URL}/pets/${id}/history`, { method: 'GET', headers: getAuthHeaders(), })
     const data = await response.json()
 
     return data
@@ -22,7 +27,7 @@ export async function create(payload) {
     const body = JSON.stringify(payload)
     const pet_id = payload.pet_id
 
-    const response = await fetch(`${BASE_URL}/pets/${pet_id}/history`, { method: 'POST', headers: baseHeaders, body })
+    const response = await fetch(`${BASE_URL}/pets/${pet_id}/history`, { method: 'POST', headers: getAuthHeaders(), body })
 
     const data = await response.json()
     return data
@@ -30,7 +35,7 @@ export async function create(payload) {
 
 export async function update(payload) {
     const body = JSON.stringify(payload)
-    const response = await fetch(`${URL}/${payload.id}`, { method: 'PUT', headers: baseHeaders, body })
+    const response = await fetch(`${URL}/${payload.id}`, { method: 'PUT', headers: getAuthHeaders(), body })
     const data = await response.json()
 
     return data
@@ -42,7 +47,7 @@ export async function uploadImage(petId, historyId, image) {
     const url = `${BASE_URL}/pets/${petId}/history/${historyId}/images`
     const body = new FormData()
     body.append("file", image)
-    const response = await fetch(url, { method: 'POST', body })
+    const response = await fetch(url, { method: 'POST', headers: getAuthHeaders({}), body })
 
     return response.ok
 }
