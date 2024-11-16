@@ -19,9 +19,10 @@ export default function LoginPage() {
     sessionService.login(loginData)
       .then(response => {
         const token = response.access_token;
+        const exp = response.exp;
         localStorage.setItem("token", token);
+        localStorage.setItem("token expiration", exp)
 
-        // Verificar si el token se guardó y luego navegar
         if (localStorage.getItem("token")) {
           navigate("/clients");
         } else {
