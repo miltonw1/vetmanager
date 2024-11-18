@@ -1,57 +1,44 @@
-import { useState, useEffect } from 'react'
-import { useNavigate  } from 'react-router-dom'
-import { LoginLayout } from "../layouts/LoginLayout"
-import { TextInput, PasswordInput } from "../components/common/inputs"
-import * as sessionService from '../services/session.services'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LoginLayout } from "../layouts/LoginLayout";
+import { TextInput, PasswordInput } from "../components/common/inputs";
+import { useSessionStore } from "@s/session.store";
 
 export default function LoginPage() {
-  const [ email, setEmail ] = useState('')
-  const  [ password, setPassword ] = useState('')
-  const navigate = useNavigate()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const loginData = {
-    email,
-    password
-  }
+  const getSession = useSessionStore((store) => store.getSession);
 
-  function login(event) {
+  const loginData = { email, password };
+
+  async function loginStore(event) {
     event.preventDefault();
-    sessionService.login(loginData)
-      .then(response => {
-        const token = response.access_token;
-        const exp = response.exp;
-        localStorage.setItem("token", token);
-        localStorage.setItem("token expiration", exp)
+    try {
+      await getSession(loginData);
 
-        if (localStorage.getItem("token")) {
-          navigate("/clients");
-        } else {
-          console.error("Error: Token no guardado correctamente.");
-        }
-      })
-      .catch(error => {
-        console.error("Error al iniciar sesión:", error);
-      });
+      if (localStorage.getItem("token")) {
+        navigate("/clients");
+      } else {
+        console.error("Error: Token no guardado correctamente.");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
   }
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("token")) {
-  //     navigate("/clients");
-  //   }
-  // }, []);
 
   return (
     <LoginLayout>
       <div className="flex flex-col items-center justify-center p-36">
-
-        <form onSubmit={login}  className="flex flex-col items-center justify-center gap-6">
+        <form onSubmit={loginStore} className="flex flex-col items-center justify-center gap-6">
           <TextInput
             className="w-80"
             data-cy="user-name-field"
             id="username"
             label="Nombre de usuario"
             placeholder="Usuario"
-            onChange = {event => setEmail(event.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
           />
           <PasswordInput
             className="w-80"
@@ -59,7 +46,7 @@ export default function LoginPage() {
             id="password"
             label="Contraseña"
             placeholder="Contraseña"
-            onChange = {event => setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
           />
           <p>Si olvidate la contrasenia sos un mono.</p>
           <p>Royale with cheese</p>
@@ -73,5 +60,5 @@ export default function LoginPage() {
         </form>
       </div>
     </LoginLayout>
-  )
+  );
 }
