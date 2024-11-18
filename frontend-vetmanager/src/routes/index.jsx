@@ -4,8 +4,7 @@ import {
   redirect,
 } from 'react-router-dom'
 
-import AppPage from '../pages/AppPage'
-import RootPage from '../pages/RootPage'
+
 import LoginPage from '../pages/LoginPage'
 import ClientPage from '../pages/clients/ClientPage'
 import CreateClientPage from '../pages/clients/CreateClientPage'
@@ -16,60 +15,91 @@ import PetsListPage from '../pages/pets/PetsListPage'
 import PetHistoriesPage from '../pages/pet-history/PetHistoriesPage'
 import SpeciesListPage from '../pages/species/SpeciesListPage'
 import CreateSpeciesPage from '../pages/species/CreateSpeciesPage'
+import { ProtectedRoute } from './ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     path: '',
-    loader: () => {
-      return redirect('/login')
-    }
-  },
-  {
-    path: '/app',
-    element: <AppPage />
+    loader: () => redirect('/login'),
   },
   {
     path: '/login',
-    element: <LoginPage />
+    element: <LoginPage />,
   },
   {
     path: '/clients',
-    element: <ClientsListPage />
+    element: (
+      <ProtectedRoute>
+        <ClientsListPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/clients/create',
-    element: <CreateClientPage />
+    element: (
+      <ProtectedRoute>
+        <CreateClientPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/clients/:id',
-    element: <ClientPage />
+    element: (
+      <ProtectedRoute>
+        <ClientPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/clients/:id/edit',
-    element: <EditClientPage />
+    element: (
+      <ProtectedRoute>
+        <EditClientPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/pets',
-    element: <PetsListPage />
+    element: (
+      <ProtectedRoute>
+        <PetsListPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/pets/:id',
-    element: <PetPage />
+    element: (
+      <ProtectedRoute>
+        <PetPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/pets/:id/histories',
-    element: <PetHistoriesPage />
+    element: (
+      <ProtectedRoute>
+        <PetHistoriesPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/species',
-    element: <SpeciesListPage />
+    element: (
+      <ProtectedRoute>
+        <SpeciesListPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/species/create',
-    element: <CreateSpeciesPage />
-  }
-])
+    element: (
+      <ProtectedRoute>
+        <CreateSpeciesPage />
+      </ProtectedRoute>
+    ),
+  },
+]);
 
-export default function () {
-    return <RouterProvider router={router} />
+export default function AppRouter() {
+  return <RouterProvider router={router} />;
 }
