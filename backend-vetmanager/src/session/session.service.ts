@@ -17,7 +17,7 @@ export class SessionService {
 
 		const { passwords, ...user } = result;
 
-		const isSamePassword = bcrypt.compare(password, passwords[0].body);
+		const isSamePassword =  await bcrypt.compare(password, passwords[0].body);
 
 		return isSamePassword
 			? user as User
