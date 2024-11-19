@@ -7,26 +7,29 @@ import { useSessionStore } from "@s/session.store";
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [loginError, setloginError] = useState('');
 
-  const getSession = useSessionStore((store) => store.getSession);
+  const navigate = useNavigate();
 
   const loginData = { email, password };
 
+  const getSession = useSessionStore((store) => store.getSession);
+
+  // @@@@@ Todo: mejorar los mensajes de errores aca y en el store de session
   async function loginStore(event) {
     event.preventDefault();
-    try {
-      await getSession(loginData);
+    setloginError('');
 
-      if (localStorage.getItem("token")) {
+    const error = await getSession(loginData);
+
+    if (error) {
+        setloginError(error);
+    } else if (localStorage.getItem("token")) {
         navigate("/clients");
-      } else {
-        console.error("Error: Token no guardado correctamente.");
-      }
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
+    } else {
+        setloginError("Usuario o contraseña incorrectos.");
     }
-  }
+}
 
   return (
     <LoginLayout>
@@ -50,6 +53,8 @@ export default function LoginPage() {
           />
           <p>Si olvidate la contrasenia sos un mono.</p>
           <p>Royale with cheese</p>
+          {loginError && <p className="text-red-600">{loginError}</p>} {/* Mensaje de error */}
+
           <button
             className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60"
             data-cy="login-button"

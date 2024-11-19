@@ -10,7 +10,7 @@ export const useSessionStore = create((set) => ({
 
         try {
             const sessionData = await sessionServices.login(credentials);
-
+            console.log(sessionData)
             const { access_token: token, exp } = sessionData;
 
             if (token) {
@@ -23,6 +23,9 @@ export const useSessionStore = create((set) => ({
                     request: { idle: true, fetching: false },
                 });
             } else {
+                if (sessionData.statusCode >= 400) {
+                throw new Error("Usuario o contraseña incorrectos.");
+                }
                 throw new Error("No se recibió el token.");
             }
         } catch (error) {
