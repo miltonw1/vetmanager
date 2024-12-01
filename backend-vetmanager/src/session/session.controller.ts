@@ -10,6 +10,12 @@ import { CreateUserDto, UserDto } from "../users/dto";
 import { UsersService } from "../users/services/users.service";
 import { PasswordsService } from "../users/services/passwords.service";
 
+
+async function waitTime (ms: number): Promise <void> {
+	return new Promise((resolve) => setTimeout(() => resolve(), ms));
+}
+
+
 @Controller("session")
 export class SessionController {
 	constructor(
@@ -18,6 +24,7 @@ export class SessionController {
 		private readonly passwordsService: PasswordsService,
 		private readonly config: ConfigService,
 	) {}
+
 
 	@Post("login")
 	async login(@Body() data: LoginDto) {
@@ -30,6 +37,7 @@ export class SessionController {
 
 			throw new NotAcceptableException("Wrong credentials");
 		} catch {
+			await waitTime(3000);
 			throw new NotAcceptableException("Wrong credentials");
 		}
 	}
