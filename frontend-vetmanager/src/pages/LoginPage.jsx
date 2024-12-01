@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginLayout } from "../layouts/LoginLayout";
 import { TextInput, PasswordInput } from "../components/common/inputs";
@@ -14,22 +14,25 @@ export default function LoginPage() {
   const loginData = { email, password };
 
   const getSession = useSessionStore((store) => store.getSession);
+  const isAuthenticated = useSessionStore((store) => store.isAuthenticated);
+  const isFetching = useSessionStore((store) => store.request.fetching);
 
-  // @@@@@ Todo: mejorar los mensajes de errores aca y en el store de session
+  const isDisabled = useMemo(() => isFetching ||!email ||!password, [isFetching, email, password]);
+
+
   async function loginStore(event) {
     event.preventDefault();
     setloginError('');
 
-    const error = await getSession(loginData);
+    await getSession(loginData);
 
-    if (error) {
-        setloginError(error);
-    } else if (localStorage.getItem("token")) {
-        navigate("/clients");
-    } else {
-        setloginError("Usuario o contraseña incorrectos.");
+    if (isAuthenticated()) {
+      navigate("/clients");
     }
-}
+    else {
+      setloginError("Usuario o contraseña incorrectos.");
+    }
+  }
 
   return (
     <LoginLayout>
@@ -51,16 +54,16 @@ export default function LoginPage() {
             placeholder="Contraseña"
             onChange={(event) => setPassword(event.target.value)}
           />
-          <p>Si olvidate la contrasenia sos un mono.</p>
-          <p>Royale with cheese</p>
-          {loginError && <p className="text-red-600">{loginError}</p>} {/* Mensaje de error */}
+
+          <p className="text-red-600">{loginError}</p>
 
           <button
             className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60"
             data-cy="login-button"
+            disabled={isDisabled}
             type="submit"
           >
-            Login
+            {isFetching ? "..." : "Login"}
           </button>
         </form>
       </div>

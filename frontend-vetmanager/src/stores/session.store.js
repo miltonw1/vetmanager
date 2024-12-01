@@ -10,29 +10,55 @@ export const useSessionStore = create((set) => ({
 
         try {
             const sessionData = await sessionServices.login(credentials);
-            console.log(sessionData)
+
+            if (sessionData.statusCode >= 400) {
+                throw new Error("Usuario o contraseña incorrectos.");
+            }
+
             const { access_token: token, exp } = sessionData;
 
-            if (token) {
-                // Guarda el token y su expiración en localStorage
-                localStorage.setItem("token", token);
-                localStorage.setItem("token expiration", exp);
 
-                set({
-                    session: { token, exp },
-                    request: { idle: true, fetching: false },
-                });
-            } else {
-                if (sessionData.statusCode >= 400) {
-                throw new Error("Usuario o contraseña incorrectos.");
-                }
-                throw new Error("No se recibió el token.");
-            }
+            localStorage.setItem("token", token);
+            localStorage.setItem("token expiration", exp);
+
+            set({
+                session: { token, exp },
+                request: { idle: false, fetching: false },
+            });
+
         } catch (error) {
             console.error("Error en inicio de sesión:", error);
             set({ request: { idle: true, fetching: false } });
         }
     },
 
-    isLoggedIn: () => !!localStorage.getItem("token"),
+    isAuthenticated: () => {
+        const token = localStorage.getItem('token');
+        const expiration = localStorage.getItem('token expiration');
+
+        if (!token || !expiration) {
+            return false;
+        }
+
+        const now = new Date();
+        const expirationDate = new Date(parseInt(expiration) * 1000);
+
+
+        if (expirationDate <= now) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('token expiration');
+            return false;
+        }
+
+        return true;
+    },
+
+    logOut: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('token expiration');
+        set({
+            session: null,
+            request: { idle: true, fetching: false },
+        });
+    }
 }));
