@@ -17,7 +17,6 @@ export function SpeciesForm({ species, onClick, onChange }) {
         onChange({ name: speciesValue })
     }, [speciesValue, onChange])
 
-    console.log(speciesValue)
     return (
         <section className="flex flex-col gap-6 w-80">
 

@@ -31,7 +31,6 @@ export default function PetHistoriesPage() {
 	};
 
 	const openCreationModal = () => {
-		console.log("open creation modal");
 		setCreationModalShow(true);
 	};
 

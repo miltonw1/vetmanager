@@ -102,6 +102,5 @@ export class PetHistoryController {
     const filePathSplit = filePath.split("\\").slice(1)
     const pathUrl = process.env.BASE_URL + filePathSplit.join("/")
     const result = await this.imageHistoryService.create({pet_history_id: Number(id), image_src: file.path, image_url: pathUrl} as PetHistoryImage);
-    //console.log(result)
   }
 }
