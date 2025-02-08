@@ -2,22 +2,11 @@ import { HistoriesCarousel } from "./HistoriesCarousel";
 import { useHistoriesStore } from "../../stores/histories.store";
 import { useRef, useEffect } from "react";
 
-export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnosis, observations, onClose }) {
+export function PetHistoryModal({ history, name, tutor, weight, diagnosis, observations, onClose }) {
 	const uploadRef = useRef(null);
 	const cameraRef = useRef(null);
 
 	const uploadImage = useHistoriesStore((store) => store.uploadImage);
-
-	const histories = useHistoriesStore((store) => store.histories);
-	const historiesRequest = useHistoriesStore((store) => store.request);
-	const getAllHistories = useHistoriesStore((store) => store.getAll);
-	const history = histories.find((x) => x.id === parseInt(historyId));
-
-	useEffect(() => {
-		if (histories.length === 0) {
-			getAllHistories(petId);
-		}
-	}, [histories, getAllHistories, petId]);
 
 
 	function handleUpload() {
@@ -29,20 +18,20 @@ export function PetHistoryModal({ petId, historyId, name, tutor, weight, diagnos
 
 	function handleInputChange(event) {
 		const file = event.target.files[0];
-		uploadImage(petId, historyId, file);
+		uploadImage(history.pet_id, history.id, file);
 	}
 
-	const isFetchingHistories = historiesRequest.idle || historiesRequest.fetching;
+	// const isFetchingHistories = historiesRequest.idle || historiesRequest.fetching;
 
 
 
-	if (isFetchingHistories) {
-		return (
-			<MainLayout title={"Historia clínica de"}>
-				<p>Cargando...</p>
-			</MainLayout>
-		);
-	}
+	// if (isFetchingHistories) {
+	// 	return (
+	// 		<MainLayout title={"Historia clínica de"}>
+	// 			<p>Cargando...</p>
+	// 		</MainLayout>
+	// 	);
+	// }
 
 
 	return (
