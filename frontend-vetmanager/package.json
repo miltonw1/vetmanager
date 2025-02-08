@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:remote": "vite --mode production",
     "fmt": "biome format --write src",
     "lint": "biome lint src",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "eslint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
