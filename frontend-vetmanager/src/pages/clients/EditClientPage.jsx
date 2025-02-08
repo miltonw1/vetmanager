@@ -14,14 +14,15 @@ export default function EditClientPage() {
 	const clients = useClientStore((store) => store.clients);
 	const getAll = useClientStore((store) => store.getAll);
 	const client = clients.find((x) => x.id === parseInt(params.id));
+	const requestClients = useClientStore((store) => store.request);
 
 	const update = useClientStore((store) => store.update);
 
 	useEffect(() => {
-		if (clients.length === 0) {
+		if (requestClients.idle) {
 			getAll();
 		}
-	}, [clients, getAll]);
+	}, [requestClients.idle, getAll]);
 
 	function onSave() {
 

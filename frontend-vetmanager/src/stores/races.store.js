@@ -5,11 +5,17 @@ import * as racesServices from "../services/races.services";
 export const useRaceStore = create((set) => {
 	return {
 		races: [],
+		request: { idle: true },
 
 		getAll: async () => {
+			set({ request: { idle: false, fetching: true } })
+
 			const data = await racesServices.getAll();
 
-			set({ races: data });
+			set({
+				races: data,
+				request: { idle: false, fetching: false },
+			});
 		},
 
 		create: async (newRace) => {

@@ -16,30 +16,35 @@ export default function ClientPage() {
 	const [petCreationModalShow, setPetCreationModalShow] = useState(false);
 	const [editClient, setEditClient] = useState();
 
+
 	const clients = useClientStore((store) => store.clients);
 	const getAll = useClientStore((store) => store.getAll);
 	const client = clients.find((x) => x.id === parseInt(params.id));
+	const clientsRequest = useClientStore((store) => store.request);
+
 
 	const pets = usePetStore((store) => store.pets);
 	const getAllPets = usePetStore((store) => store.getAll);
 	const clientPets = client ? pets.filter((x) => x.client_id === parseInt(params.id)) : null;
+	const petsRequest = usePetStore((store) => store.request);
 
 
 
 	const handleDebtModalShow = () => setDebtModalShow(true);
 	const handlePetCreationModalShow = () => setPetCreationModalShow(true);
 
-	useEffect(() => {
-		if (clients.length === 0) {
-			getAll();
-		}
-	}, [clients, getAll]);
 
 	useEffect(() => {
-		if (pets.length === 0) {
+		if (clientsRequest.idle) {
+			getAll();
+		}
+	}, [clientsRequest.idle, getAll]);
+
+	useEffect(() => {
+		if (petsRequest.idle) {
 			getAllPets();
 		}
-	}, [pets, getAllPets]);
+	}, [petsRequest.idle, getAllPets]);
 
 	if (!client || !clientPets) {
 		return <p>Cargando...</p>;
@@ -58,7 +63,7 @@ export default function ClientPage() {
 			<PetCard name={pet.name} {...pet} />
 		</Link>
 	));
-	//const clientCards = clients.map(client => (<Link to={`/clients/${client.id}`}><ClientCard key={client.id} {...client} /></Link>))
+
 
 	return (
 		<MainLayout title="Cliente">

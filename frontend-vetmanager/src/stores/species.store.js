@@ -5,11 +5,18 @@ import * as speciesServices from "../services/species.services";
 export const useSpeciesStore = create((set) => {
 	return {
 		species: [],
+		request: { idle: true },
+
 
 		getAll: async () => {
+			set({ request: { idle: false, fetching: true } })
+
 			const data = await speciesServices.getAll();
 
-			set({ species: data });
+			set({
+				species: data,
+				request: { idle: false, fetching: false },
+			});
 		},
 
 		create: async (newSpecies) => {

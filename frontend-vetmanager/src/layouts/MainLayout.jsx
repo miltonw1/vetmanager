@@ -3,25 +3,37 @@ import { useEffect } from "react";
 import { useRaceStore } from "@s/races.store";
 import { useSpeciesStore } from "@s/species.store";
 import clsx from "clsx";
+import { useState } from "react";
 
 export function MainLayout({ title, children }) {
-	const races = useRaceStore((store) => store.races);
-	const getAllRaces = useRaceStore((store) => store.getAll);
+
+
+	const {
+		races,
+		getAll: getAllRaces,
+		request: racesRequest,
+	} = useRaceStore();
+
+	const {
+		species: allSpecies,
+		getAll: getAllSpecies,
+		request: speciesRequest,
+	} = useSpeciesStore();
+
 
 	useEffect(() => {
-		if (races.length === 0) {
+		if (racesRequest.idle) {
 			getAllRaces();
 		}
-	}, [races, getAllRaces]);
+	}, [racesRequest.idle, getAllRaces]);
 
-	const species = useSpeciesStore((store) => store.species);
-	const getAllSpecies = useSpeciesStore((store) => store.getAll);
+
 
 	useEffect(() => {
-		if (species.length === 0) {
+		if (speciesRequest.idle) {
 			getAllSpecies();
 		}
-	}, [species, getAllSpecies]);
+	}, [speciesRequest.idle, getAllSpecies]);
 
 	return (
 		<main
@@ -36,7 +48,9 @@ export function MainLayout({ title, children }) {
 		>
 			<nav className={["main-layout__menu"]} />
 
-			<h2 className={clsx(style["main-layout__title"], "text-3xl", "font-bold", "mt-8")} data-cy="page-title">{title}</h2>
+			<h2 className={clsx(style["main-layout__title"], "text-3xl", "font-bold", "mt-8")} data-cy="page-title">
+				{title}
+			</h2>
 
 			<search className={style["main-layout__search"]} />
 
