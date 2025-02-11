@@ -15,6 +15,8 @@ import PetsListPage from '../pages/pets/PetsListPage'
 import PetHistoriesPage from '../pages/pet-history/PetHistoriesPage'
 import SpeciesListPage from '../pages/species/SpeciesListPage'
 import CreateSpeciesPage from '../pages/species/CreateSpeciesPage'
+import RacesListPage from '../pages/races/RacesListPage'
+import CreateRacePage from '../pages/races/CreateRacePage'
 import { ProtectedRoute } from './ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -95,6 +97,22 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <CreateSpeciesPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/races',
+    element: (
+      <ProtectedRoute>
+        <RacesListPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/races/create',
+    element: (
+      <ProtectedRoute>
+        <CreateRacePage />
       </ProtectedRoute>
     ),
   },

@@ -43,7 +43,7 @@ export function PetCreationModal({ client, onClose }) {
 	};
 
 
-	// CHAT GPT A FONDO ACA ABAJO
+
 	useEffect(() => {
 		if (selectedSpecies) {
 			const filtered = races.filter((race) => {
