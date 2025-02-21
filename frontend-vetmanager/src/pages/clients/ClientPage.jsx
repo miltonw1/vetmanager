@@ -58,12 +58,13 @@ export default function ClientPage() {
 		setPetCreationModalShow(false);
 	}
 
-	const petCards = clientPets.map((pet) => (
-		<Link key={pet.id} to={`/pets/${pet.id}`}>
-			<PetCard name={pet.name} {...pet} />
-		</Link>
+	const petList = clientPets.map((pet) => (
+		<li key={pet.id} className="hover:text-violet-900 hover:pl-2 transition-all duration-200">
+			<Link to={`/pets/${pet.id}`} className="text-lg font-semibold text-violet-800 dark:text-violet-200">
+				{pet.name}
+			</Link>
+		</li>
 	));
-
 
 	return (
 		<MainLayout title="Cliente">
@@ -83,14 +84,13 @@ export default function ClientPage() {
 							</p>
 						</div>
 					) : null}
-					{client?.debt === "0" && (
-						<p className="text-red-500">
-							{/* <strong>Adeuda: {client.debt}</strong>&nbsp; */}
-							<button onClick={handleDebtModalShow} className="text-red-500 underline">
-								Agregar deuda
+					{!client?.debt || client.debt === "0" ? (
+						<p>
+							<button onClick={handleDebtModalShow} >
+							💲 Agregar deuda
 							</button>
 						</p>
-					)}
+					) : null}
 					<p>
 						<strong>Nombre:</strong>&nbsp;
 						{client?.name}
@@ -113,26 +113,28 @@ export default function ClientPage() {
 					</p>
 
 					{debtModalShow &&
-					//Debt Modal
-					<DebtModal
-					client={client}
-					onClose={closeDebtCreationModal}
-					onChange={setEditClient} />}
+						//Debt Modal
+						<DebtModal
+							client={client}
+							onClose={closeDebtCreationModal}
+							onChange={setEditClient} />}
 
 					{petCreationModalShow &&
-					<PetCreationModal
-					client={client}
-					onClose={closePetCreationModal}/> }
+						<PetCreationModal
+							client={client}
+							onClose={closePetCreationModal} />}
 				</section>
 				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 				<button onClick={handlePetCreationModalShow}
-				className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60">
+					className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60">
 					Agregar Mascota
 				</button>
 
-				<section className="h-[100%] border border-violet-800">
+				<section className=" border-violet-800 p-4">
 					<h4>Mascotas</h4>
-					<ul>{petCards}</ul>
+					<ul className="space-y-2">
+						{petList}  {/* Aquí usas la lista generada arriba */}
+					</ul>
 				</section>
 			</div>
 		</MainLayout>
