@@ -18,6 +18,7 @@ import CreateSpeciesPage from '../pages/species/CreateSpeciesPage'
 import RacesListPage from '../pages/races/RacesListPage'
 import CreateRacePage from '../pages/races/CreateRacePage'
 import { ProtectedRoute } from './ProtectedRoute';
+import HomePage from '../pages/home/HomePage'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/home',
+    element: (
+      <ProtectedRoute>
+      <HomePage />
+    </ProtectedRoute>
+    )
   },
   {
     path: '/clients',

@@ -27,7 +27,7 @@ export default function LoginPage() {
     await getSession(loginData);
 
     if (isAuthenticated()) {
-      navigate("/clients");
+      navigate("/home");
     }
     else {
       setloginError("Usuario o contraseña incorrectos.");
