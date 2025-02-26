@@ -24,14 +24,37 @@ export class ClientService {
 		});
 	}
 
-	updateClient(id: number, data: Client): Promise<Client> {
-		return this.prisma.client.update({
-			where: {
-				id,
-			},
-			data,
+	async updateClient(id: number, data: Client, userId: number): Promise<Client> {
+		const client = await this.prisma.client.findUnique({
+		  where: { id },
+		  select: { debt: true },
 		});
-	}
+
+
+		if (!client) throw new Error("Cliente no encontrado");
+
+		const updatedClient = await this.prisma.client.update({
+		  where: { id },
+		  data,
+		});
+
+		try {
+			await this.prisma.debtLog.create({
+			  data: {
+				client_id: id,
+				user_id: userId,
+				previous_debt: client.debt ?? "0",
+				new_debt: data.debt,
+			  },
+			});
+		  } catch (error) {
+			console.error("Error al crear el log de deuda:", error);
+			throw new Error("Error al registrar el cambio de deuda");
+		  }
+
+		return updatedClient;
+	  }
+
 
 	deleteClient(id: number): Promise<Client> {
 		return this.prisma.client.delete({

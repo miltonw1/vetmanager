@@ -16,6 +16,8 @@ import { SessionModule } from "./session/session.module";
 import { PetHistoryModule } from './pet-history/pet-history.module';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "node:path";
+import { DebtLogService } from './debt-log/debt-log.service';
+import { DebtLogController } from './debt-log/debt-log.controller';
 
 
 @Module({
@@ -36,7 +38,7 @@ import { join } from "node:path";
 		UsersModule,
 		SessionModule,
 	],
-	controllers: [AppController],
-	providers: [AppService, PrismaService],
+	controllers: [AppController, DebtLogController],
+	providers: [AppService, PrismaService, DebtLogService],
 })
 export class AppModule {}

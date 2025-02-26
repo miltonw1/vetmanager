@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards, Request } from "@nestjs/common";
 import { Client } from "@prisma/client";
 import { ClientService } from "./clients.service";
 import { ClientDto, CreateClientDto, UpdateClientDto } from "./dto/client.dto";
@@ -39,9 +39,10 @@ export class ClientController {
 	}
 
 	@Put(":id")
-	async updateClient(@Param("id") id: string, @Body() data: UpdateClientDto): Promise<ClientDto> {
+	async updateClient(@Param("id") id: string, @Body() data: UpdateClientDto, @Request() req ): Promise<ClientDto> {
+		const userId = req.user.userId
 		try {
-			return await this.clientService.updateClient(Number(id), data as Client);
+			return await this.clientService.updateClient(Number(id), data as Client, userId );
 		} catch {
 			throw new NotFoundException("Client not found");
 		}

@@ -24,14 +24,25 @@ model Password {
 }
 
 model Client {
-  id      Int     @id @default(autoincrement())
-  name    String
-  phone   String
-  email   String?
-  address String?
-  city    String?
-  debt    String?
-  pets    Pet[]
+  id       Int       @id @default(autoincrement())
+  name     String
+  phone    String
+  email    String?
+  address  String?
+  city     String?
+  debt     String?
+  debt_log DebtLog[]
+  pets     Pet[]
+}
+
+model DebtLog {
+  id           Int      @id @default(autoincrement())
+  client_id    Int
+  user_id      Int
+  previous_debt String
+  new_debt      String
+  created_at    DateTime @default(now())
+  client       Client   @relation(fields: [client_id], references: [id])
 }
 
 model Pet {
