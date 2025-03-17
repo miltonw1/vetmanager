@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, IsInt } from "class-validator";
+import { IsString, IsOptional, IsNumber, IsInt, Min } from "class-validator";
 
 export class CreatePetHistoryDto {
     @IsInt()
@@ -13,5 +13,6 @@ export class CreatePetHistoryDto {
 
     @IsOptional()
     @IsNumber()
+    @Min(0)
     weight?: number;
 }

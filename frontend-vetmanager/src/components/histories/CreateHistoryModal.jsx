@@ -25,7 +25,7 @@ export function CreateHistoryModal({ pet, onClose }) {
 	function handleChange(event, field) {
 		const value = event.target.value;
 		if (field === 'weight') {
-			if (/^\d*$/.test(value)) {
+			if (/^\d*(\.\d*)?$/.test(value)) {
 				setNewHistory((prev) => ({
 					...prev,
 					[field]: value,
