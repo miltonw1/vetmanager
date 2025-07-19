@@ -1,31 +1,23 @@
 import { Navigate } from 'react-router-dom';
-
-
-const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
-  const expiration = localStorage.getItem('token expiration');
-
-  if (!token || !expiration) {
-    return false;
-  }
-
-  const now = new Date();
-  const expirationDate = new Date(parseInt(expiration) * 1000);
-
-
-  if (expirationDate <= now) {
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('token expiration');
-    return false;
-  }
-
-  return true;
-};
+import { useEffect } from 'react';
+import { useSessionStore } from '../stores/session.store';
 
 export function ProtectedRoute({ children }) {
+  const { session, request, loadSession, isAuthenticated } = useSessionStore();
+
+  useEffect(() => {
+    if (request.idle) {
+      loadSession();
+    }
+  }, [request.idle, loadSession]);
+
+  if (request.fetching || request.idle) {
+    return <div>Cargando...</div>; // O un spinner, etc.
+  }
+
   if (!isAuthenticated()) {
     return <Navigate to="/login"/>;
   }
+
   return children;
 }

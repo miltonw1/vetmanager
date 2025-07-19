@@ -19,6 +19,7 @@ import RacesListPage from '../pages/races/RacesListPage'
 import CreateRacePage from '../pages/races/CreateRacePage'
 import { ProtectedRoute } from './ProtectedRoute';
 import HomePage from '../pages/home/HomePage'
+import ProfilePage from '../pages/users/ProfilePage'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,14 @@ const router = createBrowserRouter([
       <ProtectedRoute>
       <HomePage />
     </ProtectedRoute>
+    )
+  },
+  {
+    path: '/profile',
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
     )
   },
   {

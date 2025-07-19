@@ -4,6 +4,7 @@ import { useRaceStore } from "@s/races.store";
 import { useSpeciesStore } from "@s/species.store";
 import clsx from "clsx";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function MainLayout({ title, children }) {
 
@@ -46,7 +47,8 @@ export function MainLayout({ title, children }) {
 				"overflow-scroll",
 			)}
 		>
-			<nav className={["main-layout__menu"]} />
+			<nav className={["main-layout__menu"]}>
+			</nav>
 
 			<h2 className={clsx(style["main-layout__title"], "text-3xl", "font-bold", "mt-8")} data-cy="page-title">
 				{title}
@@ -58,3 +60,4 @@ export function MainLayout({ title, children }) {
 		</main>
 	);
 }
+

@@ -1,7 +1,11 @@
-import { CreateUserDto } from "./create-user.dto";
-import { IsInt } from "class-validator";
+import { IsString, IsEmail, IsOptional } from "class-validator";
 
-export class UpdateUserDto extends CreateUserDto {
-	@IsInt()
-	id: number;
+export class UpdateUserDto {
+	@IsOptional()
+	@IsString()
+	name?: string;
+
+	@IsOptional()
+	@IsEmail()
+	email?: string;
 }
