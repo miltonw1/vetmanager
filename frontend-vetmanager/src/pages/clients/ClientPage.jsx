@@ -124,11 +124,19 @@ export default function ClientPage() {
 							client={client}
 							onClose={closePetCreationModal} />}
 				</section>
-				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-				<button onClick={handlePetCreationModalShow}
-					className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60">
-					Agregar Mascota
-				</button>
+				<div className="flex gap-4">
+					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+					<button onClick={handlePetCreationModalShow}
+						className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60">
+						Agregar Mascota
+					</button>
+					<Link to={`/clients/${client.id}/edit`}>
+						<button
+							className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60">
+							Editar Cliente
+						</button>
+					</Link>
+				</div>
 
 				<section className=" border-violet-800 p-4">
 					<h4>Mascotas</h4>

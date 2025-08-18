@@ -1,39 +1,37 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-import { useClientStore } from "@s/clients.store";
+import { useClientStore } from "../../stores/clients.store";
 
-import { MainLayout } from "@/layouts/MainLayout";
-import { ClientCard } from "@/components/clients/ClientCard";
+import { MainLayout } from "../../layouts/MainLayout";
 import { ClientForm } from "../../components/clients/ClientForm";
 
 export default function EditClientPage() {
 	const params = useParams();
-	const [editClient, setEditClient] = useState();
-
-	const clients = useClientStore((store) => store.clients);
-	const getAll = useClientStore((store) => store.getAll);
-	const client = clients.find((x) => x.id === parseInt(params.id));
-	const requestClients = useClientStore((store) => store.request);
-
-	const update = useClientStore((store) => store.update);
+	const navigate = useNavigate();
+	const { clients, getAll, update } = useClientStore();
+	const [client, setClient] = useState(null);
 
 	useEffect(() => {
-		if (requestClients.idle) {
-			getAll();
+		getAll();
+	}, [getAll]);
+
+	useEffect(() => {
+		if (params.id && clients.length > 0) {
+			const clientFound = clients.find((x) => x.id === parseInt(params.id));
+			setClient(clientFound);
 		}
-	}, [requestClients.idle, getAll]);
+	}, [params.id, clients]);
 
-	function onSave() {
-
-		update(client).then(() => {
-			return redirect("/clients");
+	function onSave(data) {
+		update(data).then(() => {
+			navigate("/clients");
 		});
 	}
 
 	return (
 		<MainLayout title="Editar cliente">
-			<ClientForm client={client} onClick={onSave} onChange={setEditClient} />
+			{client && <ClientForm client={client} onSave={onSave} />}
 		</MainLayout>
 	);
 }

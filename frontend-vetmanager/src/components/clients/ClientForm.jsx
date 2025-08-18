@@ -1,14 +1,15 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Btn } from '../common/Btn'
 import { TextInput } from '../common/inputs/TextInput'
 import { MailInput } from '../common/inputs/MailInput'
 
-export function ClientForm({ client, onClick, onChange }) {
+export function ClientForm({ client, onSave }) {
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [address, setAddress] = useState('')
     const [city, setCity] = useState('')
+    const [debt, setDebt] = useState('0')
 
     const isEditing = !!client
 
@@ -19,20 +20,24 @@ export function ClientForm({ client, onClick, onChange }) {
             setEmail(client.email ?? '')
             setAddress(client.address ?? '')
             setCity(client.city ?? '')
+            setDebt(client.debt ?? '0')
         }
     }, [client, isEditing])
 
-    const clientData = useMemo(() => ({
-        name,
-        phone,
-        email,
-        address,
-        city,
-    }), [name, phone, email, address, city])
-
-    useEffect(() => {
-        onChange(clientData)
-    }, [clientData, onChange])
+    function handleSubmit() {
+        const data = {
+            name,
+            phone,
+            email,
+            address,
+            city,
+            debt
+        }
+        if (isEditing) {
+            data.id = client.id
+        }
+        onSave(data)
+    }
 
 
     return (
@@ -67,8 +72,14 @@ export function ClientForm({ client, onClick, onChange }) {
                 value={city}
                 onChange={event => setCity(event.target.value)}
             />
+            <TextInput
+                label="Deuda"
+                className="w-full"
+                value={debt}
+                onChange={event => setDebt(event.target.value)}
+            />
             <div>
-                <Btn onClick={onClick}>
+                <Btn onClick={handleSubmit}>
                     { isEditing ? 'Guardar' : 'Crear' }
                 </Btn>
             </div>

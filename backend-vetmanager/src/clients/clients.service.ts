@@ -24,7 +24,7 @@ export class ClientService {
 		});
 	}
 
-	async updateClient(id: number, data: Client, userId: number): Promise<Client> {
+	async updateClient(id: number, data: Partial<Client>, userId: number): Promise<Client> {
 		const client = await this.prisma.client.findUnique({
 		  where: { id },
 		  select: { debt: true },
@@ -33,9 +33,13 @@ export class ClientService {
 
 		if (!client) throw new Error("Cliente no encontrado");
 
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { id: _, ...updateData } = data;
+
+
 		const updatedClient = await this.prisma.client.update({
 		  where: { id },
-		  data,
+		  data: updateData,
 		});
 
 		try {
@@ -44,7 +48,7 @@ export class ClientService {
 				client_id: id,
 				user_id: userId,
 				previous_debt: client.debt ?? "0",
-				new_debt: data.debt,
+				new_debt: updatedClient.debt ?? "0",
 			  },
 			});
 		  } catch (error) {
