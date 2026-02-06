@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, NotAcceptableException, UseGuards, Request } from "@nestjs/common";
+import { Body, Controller, Get, Post, NotAcceptableException, UnauthorizedException, UseGuards, Request } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { hash } from "bcrypt";
 
@@ -28,18 +28,14 @@ export class SessionController {
 
 	@Post("login")
 	async login(@Body() data: LoginDto) {
-		try {
-			const user = await this.sessionService.validateUser(data);
+		const user = await this.sessionService.validateUser(data);
 
-			if (user) {
-				return this.sessionService.createSession(user);
-			}
-
-			throw new NotAcceptableException("Wrong credentials");
-		} catch {
+		if (!user) {
 			await waitTime(3000);
-			throw new NotAcceptableException("Wrong credentials");
+			throw new UnauthorizedException("Wrong credentials");
 		}
+
+		return this.sessionService.createSession(user);
 	}
 
 	@Post("create-admin")

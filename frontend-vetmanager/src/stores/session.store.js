@@ -30,7 +30,12 @@ export const useSessionStore = create((set) => ({
 
         } catch (error) {
             console.error("Error en inicio de sesión:", error);
-            set({ request: { idle: true, fetching: false } });
+            localStorage.removeItem("token");
+            localStorage.removeItem("token expiration");
+            set({ 
+                session: null,
+                request: { idle: true, fetching: false } 
+            });
         }
     },
 
