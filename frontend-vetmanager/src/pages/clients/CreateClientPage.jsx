@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useNavigate  } from 'react-router-dom'
 
 import { useClientStore } from "@s/clients.store";
@@ -7,15 +6,12 @@ import { ClientForm } from '../../components/clients/ClientForm';
 
 
 export default function CreateClientPage() {
-    const [newClient, setNewClient] = useState({})
-
-
     const create = useClientStore((store) => store.create);
     const navigate = useNavigate()
 
 
-    function onSave() {
-        create(newClient).then(() => {
+    function handleSave(data) {
+        create(data).then(() => {
             navigate("/clients")
         })
     }
@@ -23,8 +19,7 @@ export default function CreateClientPage() {
     return (
         <MainLayout title="Registrar cliente">
             <ClientForm
-                onClick={onSave}
-                onChange={setNewClient}
+                onSave={handleSave}
             />
         </MainLayout>
     )

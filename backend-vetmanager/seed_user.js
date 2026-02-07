@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = 'admin@vetmanager.com';
-  const password = 'adminpassword';
+  const email = 'milton.wery@gmail.com';
+  const password = 'asd123';
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 

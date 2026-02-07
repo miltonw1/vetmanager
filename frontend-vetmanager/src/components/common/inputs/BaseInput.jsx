@@ -8,6 +8,7 @@ export function BaseInput ({
     value,
     onChange,
     className,
+    error,
     ...props
 }) {
     return (
@@ -19,7 +20,9 @@ export function BaseInput ({
                 {label}
             </label>
             <input
-                className={clsx("block rounded-md border border-gray-300 text-white pl-2 h-10", className)}
+                className={clsx("block rounded-md border border-gray-300 text-white pl-2 h-10", className, {
+                    "border-red-500": !!error
+                })}
                 type={type}
                 placeholder={placeholder}
                 id={id}
@@ -27,6 +30,7 @@ export function BaseInput ({
                 onChange={onChange}
                 {...props}
             />
+            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
         </div>
     );
 
