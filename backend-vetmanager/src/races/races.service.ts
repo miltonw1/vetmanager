@@ -6,37 +6,48 @@ import { PrismaService } from "../prisma/prisma.service";
 export class RaceService {
 	constructor(private prisma: PrismaService) {}
 
-	create(data: Race): Promise<Race> {
+	create(data: Race, userId: number): Promise<Race> {
 		return this.prisma.race.create({
-			data,
-		});
-	}
-
-	findAll(): Promise<Race[]> {
-		return this.prisma.race.findMany();
-	}
-
-	findOne(id: number): Promise<Race> {
-		return this.prisma.race.findUniqueOrThrow({
-			where: {
-				id,
+			data: {
+				...data,
+				user_id: userId
 			},
 		});
 	}
 
-	update(id: number, data: Race): Promise<Race> {
+	findAll(userId: number): Promise<Race[]> {
+		return this.prisma.race.findMany({
+			where: { user_id: userId }
+		});
+	}
+
+	findOne(id: number, userId: number): Promise<Race> {
+		return this.prisma.race.findFirstOrThrow({
+			where: {
+				id,
+				user_id: userId
+			},
+		});
+	}
+
+	update(id: number, data: Race, userId: number): Promise<Race> {
 		return this.prisma.race.update({
 			where: {
 				id,
+				user_id: userId
 			},
-			data,
+			data: {
+				...data,
+				user_id: userId
+			},
 		});
 	}
 
-	remove(id: number): Promise<Race> {
+	remove(id: number, userId: number): Promise<Race> {
 		return this.prisma.race.delete({
 			where: {
 				id,
+				user_id: userId
 			},
 		});
 	}

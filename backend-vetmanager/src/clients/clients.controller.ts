@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards, Request } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { Client } from "@prisma/client";
 import { ClientService } from "./clients.service";
 import { ClientDto, CreateClientDto, UpdateClientDto } from "./dto/client.dto";
 import { JwtAuthGuard } from "../session/guards/jwt.guard";
+import { User } from "../session/decorators/user.decorator";
+import { ActiveUser } from "../session/interfaces/active-user.interface";
 
 
 @UseGuards(JwtAuthGuard)
@@ -11,45 +13,44 @@ export class ClientController {
 	constructor(private readonly clientService: ClientService) {}
 
 	@Post()
-	createClient(@Body() data: CreateClientDto): Promise<ClientDto> {
-		return this.clientService.createClient(data as Client);
+	createClient(@Body() data: CreateClientDto, @User() user: ActiveUser): Promise<ClientDto> {
+		return this.clientService.createClient(data as Client, user.userId);
 	}
 
 	@Get()
-	getAllClients(): Promise<ClientDto[]> {
-		return this.clientService.getAllClients();
+	getAllClients(@User() user: ActiveUser): Promise<ClientDto[]> {
+		return this.clientService.getAllClients(user.userId);
 	}
 
 	@Get(":id")
-	async getClientById(@Param("id") id: string): Promise<ClientDto> {
+	async getClientById(@Param("id") id: string, @User() user: ActiveUser): Promise<ClientDto> {
 		try {
-			return await this.clientService.getClientById(Number(id));
+			return await this.clientService.getClientById(Number(id), user.userId);
 		} catch {
 			throw new NotFoundException("Client not found");
 		}
 	}
 
 	@Delete(":id")
-	async deleteClient(@Param("id") id: string): Promise<ClientDto> {
+	async deleteClient(@Param("id") id: string, @User() user: ActiveUser): Promise<ClientDto> {
 		try {
-			return await this.clientService.deleteClient(Number(id));
+			return await this.clientService.deleteClient(Number(id), user.userId);
 		} catch {
 			throw new NotFoundException("Client not found");
 		}
 	}
 
 	@Put(":id")
-	async updateClient(@Param("id") id: string, @Body() data: UpdateClientDto, @Request() req ): Promise<ClientDto> {
-		const userId = req.user.userId
+	async updateClient(@Param("id") id: string, @Body() data: UpdateClientDto, @User() user: ActiveUser): Promise<ClientDto> {
 		try {
-			return await this.clientService.updateClient(Number(id), data as Client, userId );
+			return await this.clientService.updateClient(Number(id), data as Client, user.userId);
 		} catch {
 			throw new NotFoundException("Client not found");
 		}
 	}
 
 	@Get(":clientId/pets")
-	findAllPets(@Param("clientId") clientId: string) {
-		return this.clientService.petsFromClient(Number(clientId));
+	findAllPets(@Param("clientId") clientId: string, @User() user: ActiveUser) {
+		return this.clientService.petsFromClient(Number(clientId), user.userId);
 	}
 }

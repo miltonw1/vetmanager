@@ -6,12 +6,12 @@ import { PetHistoryDto, CreatePetHistoryDto, UpdatePetHistoryDto } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express/';
 import { diskStorage } from 'multer';
 import { JwtAuthGuard } from "../session/guards/jwt.guard";
+import { User } from "../session/decorators/user.decorator";
+import { ActiveUser } from "../session/interfaces/active-user.interface";
 import path from 'node:path';
 import fs from 'node:fs';
 
 const IMAGES_PATH = './public/images/histories';
-
-
 
 
 function toSchema(data: CreatePetHistoryDto | UpdatePetHistoryDto) {
@@ -38,37 +38,37 @@ export class PetHistoryController {
 
 
   @Post()
-  create(@Param('pet_id') petId: string, @Body() data: CreatePetHistoryDto): Promise<PetHistoryDto> {
-    return this.petHistoryService.create(toSchema(data)).then(fromSchema);
+  create(@Param('pet_id') petId: string, @Body() data: CreatePetHistoryDto, @User() user: ActiveUser): Promise<PetHistoryDto> {
+    return this.petHistoryService.create(toSchema(data), user.userId).then(fromSchema);
   }
 
   @Get()
-  findAll(@Param('pet_id') petId: string) {
-    return this.petHistoryService.findAll(Number(petId));
+  findAll(@Param('pet_id') petId: string, @User() user: ActiveUser) {
+    return this.petHistoryService.findAll(Number(petId), user.userId);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<PetHistoryDto>{
+  async findOne(@Param('id') id: string, @User() user: ActiveUser): Promise<PetHistoryDto>{
     try {
-			return await this.petHistoryService.findOne(Number(id)).then(fromSchema);
+			return await this.petHistoryService.findOne(Number(id), user.userId).then(fromSchema);
 		} catch {
 			throw new NotFoundException("History not found");
 		}
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: UpdatePetHistoryDto): Promise<PetHistoryDto> {
+  async update(@Param('id') id: string, @Body() data: UpdatePetHistoryDto, @User() user: ActiveUser): Promise<PetHistoryDto> {
     try {
-			return await this.petHistoryService.update(Number(id), toSchema(data)).then(fromSchema);
+			return await this.petHistoryService.update(Number(id), toSchema(data), user.userId).then(fromSchema);
 		} catch {
 			throw new NotFoundException("History not found");
 		}
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<PetHistoryDto> {
+  async remove(@Param('id') id: string, @User() user: ActiveUser): Promise<PetHistoryDto> {
     try {
-			return await this.petHistoryService.remove(Number(id)).then(fromSchema);
+			return await this.petHistoryService.remove(Number(id), user.userId).then(fromSchema);
 		} catch {
 			throw new NotFoundException("History not found");
 		}
@@ -97,10 +97,10 @@ export class PetHistoryController {
       }
     })
   }))
-  async uploadFile(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
+  async uploadFile(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @User() user: ActiveUser) {
     const filePath = file.path
     const filePathSplit = filePath.split("\\").slice(1)
     const pathUrl = process.env.BASE_URL + filePathSplit.join("/")
-    const result = await this.imageHistoryService.create({pet_history_id: Number(id), image_src: file.path, image_url: pathUrl} as PetHistoryImage);
+    const result = await this.imageHistoryService.create({pet_history_id: Number(id), image_src: file.path, image_url: pathUrl} as PetHistoryImage, user.userId);
   }
 }

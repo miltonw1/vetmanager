@@ -6,42 +6,54 @@ import { PrismaService } from '../prisma/prisma.service';
 export class PetHistoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(data: PetHistory): Promise<PetHistory> {
+  create(data: PetHistory, userId: number): Promise<PetHistory> {
     return this.prisma.petHistory.create({
-			data,
+			data: {
+				...data,
+				user_id: userId
+			},
 		});
   }
 
-  findAll(petId: number): Promise<PetHistory[]> {
+  findAll(petId: number, userId: number): Promise<PetHistory[]> {
     return this.prisma.petHistory.findMany({
-      where: { pet_id: petId },
+      where: { 
+				pet_id: petId,
+				user_id: userId
+			},
       include: {
         images: true
       }
     });
   }
 
-  findOne(id: number): Promise<PetHistory> {
-    return this.prisma.petHistory.findUniqueOrThrow({
+  findOne(id: number, userId: number): Promise<PetHistory> {
+    return this.prisma.petHistory.findFirstOrThrow({
 			where: {
 				id,
+				user_id: userId
 			},
 		});
   }
 
-  update(id: number, data: PetHistory): Promise<PetHistory> {
+  update(id: number, data: PetHistory, userId: number): Promise<PetHistory> {
     return this.prisma.petHistory.update({
 			where: {
 				id,
+				user_id: userId
 			},
-			data,
+			data: {
+				...data,
+				user_id: userId
+			},
 		});
   }
 
-  remove(id: number): Promise<PetHistory> {
+  remove(id: number, userId: number): Promise<PetHistory> {
     return this.prisma.petHistory.delete({
 			where: {
 				id,
+				user_id: userId
 			},
 		});
   }

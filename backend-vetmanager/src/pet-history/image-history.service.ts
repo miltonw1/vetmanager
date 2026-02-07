@@ -6,15 +6,21 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ImageHistoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(data: PetHistoryImage): Promise<PetHistoryImage> {
+  create(data: PetHistoryImage, userId: number): Promise<PetHistoryImage> {
     return this.prisma.petHistoryImage.create({
-			data,
+			data: {
+				...data,
+				user_id: userId
+			},
 		});
   }
 
-  findAll(pet_history_id: number): Promise<PetHistoryImage[]> {
+  findAll(pet_history_id: number, userId: number): Promise<PetHistoryImage[]> {
     return this.prisma.petHistoryImage.findMany({
-      where: { pet_history_id: pet_history_id },
+      where: { 
+				pet_history_id: pet_history_id,
+				user_id: userId
+			},
     });
   }
 

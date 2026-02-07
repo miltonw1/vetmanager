@@ -6,46 +6,60 @@ import { PrismaService } from "../prisma/prisma.service";
 export class SpeciesService {
 	constructor(private prisma: PrismaService) {}
 
-	create(data: Species): Promise<Species> {
+	create(data: Species, userId: number): Promise<Species> {
 		return this.prisma.species.create({
-			data,
-		});
-	}
-
-	findAll(): Promise<Species[]> {
-		return this.prisma.species.findMany();
-	}
-
-	findOne(id: number): Promise<Species> {
-		return this.prisma.species.findUniqueOrThrow({
-			where: {
-				id,
+			data: {
+				...data,
+				user_id: userId
 			},
 		});
 	}
 
-	update(id: number, data: Species): Promise<Species> {
+	findAll(userId: number): Promise<Species[]> {
+		return this.prisma.species.findMany({
+			where: { user_id: userId }
+		});
+	}
+
+	findOne(id: number, userId: number): Promise<Species> {
+		return this.prisma.species.findFirstOrThrow({
+			where: {
+				id,
+				user_id: userId
+			},
+		});
+	}
+
+	update(id: number, data: Species, userId: number): Promise<Species> {
 		return this.prisma.species.update({
 			where: {
 				id,
+				user_id: userId
 			},
-			data,
+			data: {
+				...data,
+				user_id: userId
+			},
 		});
 	}
 
-	remove(id: number): Promise<Species> {
+	remove(id: number, userId: number): Promise<Species> {
 		return this.prisma.species.delete({
 			where: {
 				id,
+				user_id: userId
 			},
 		});
 	}
 
 	// createRace() {}
 
-	async racesFromSpecies(id: number) {
-		const races = await this.prisma.species.findUniqueOrThrow({ where: { id } }).races();
+	async racesFromSpecies(id: number, userId: number) {
+		const species = await this.prisma.species.findFirstOrThrow({ 
+			where: { id, user_id: userId },
+			include: { races: true }
+		});
 
-		return races;
+		return species.races;
 	}
 }

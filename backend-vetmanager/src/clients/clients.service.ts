@@ -6,27 +6,33 @@ import { PrismaService } from "../prisma/prisma.service";
 export class ClientService {
 	constructor(private prisma: PrismaService) {}
 
-	getAllClients(): Promise<Client[]> {
-		return this.prisma.client.findMany();
+	getAllClients(userId: number): Promise<Client[]> {
+		return this.prisma.client.findMany({
+			where: { user_id: userId }
+		});
 	}
 
-	getClientById(id: number): Promise<Client> {
-		return this.prisma.client.findUniqueOrThrow({
+	getClientById(id: number, userId: number): Promise<Client> {
+		return this.prisma.client.findFirstOrThrow({
 			where: {
 				id,
+				user_id: userId
 			},
 		});
 	}
 
-	createClient(data: Client): Promise<Client> {
+	createClient(data: Partial<Client>, userId: number): Promise<Client> {
 		return this.prisma.client.create({
-			data,
+			data: {
+				...data,
+				user_id: userId
+			} as Client,
 		});
 	}
 
 	async updateClient(id: number, data: Partial<Client>, userId: number): Promise<Client> {
-		const client = await this.prisma.client.findUnique({
-		  where: { id },
+		const client = await this.prisma.client.findFirst({
+		  where: { id, user_id: userId },
 		  select: { debt: true },
 		});
 
@@ -34,11 +40,11 @@ export class ClientService {
 		if (!client) throw new Error("Cliente no encontrado");
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { id: _, ...updateData } = data;
+		const { id: _, user_id: __, ...updateData } = data as any;
 
 
 		const updatedClient = await this.prisma.client.update({
-		  where: { id },
+		  where: { id, user_id: userId },
 		  data: updateData,
 		});
 
@@ -60,18 +66,22 @@ export class ClientService {
 	  }
 
 
-	deleteClient(id: number): Promise<Client> {
+	deleteClient(id: number, userId: number): Promise<Client> {
 		return this.prisma.client.delete({
 			where: {
 				id,
+				user_id: userId
 			},
 		});
 	}
 
-	async petsFromClient(id: number) {
-		const pets = await this.prisma.client.findUniqueOrThrow({ where: { id } }).pets();
+	async petsFromClient(id: number, userId: number) {
+		const client = await this.prisma.client.findFirstOrThrow({ 
+			where: { id, user_id: userId },
+			include: { pets: true }
+		});
 
-		return pets;
+		return client.pets;
 	}
 
 }
