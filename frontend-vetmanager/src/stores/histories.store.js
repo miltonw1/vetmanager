@@ -33,13 +33,14 @@ export const useHistoriesStore = create((set) => {
 			const data = await historiesServices.update(payload);
 
 			set((state) => {
-				const index = state.history((x) => x.id === data.id);
+				const index = state.histories.findIndex((x) => x.id === data.id);
 
 				if (index !== -1) {
 					return {
-						histories: [...state.histories.slice(index), data, ...state.histories.slice(index + 1)],
+						histories: [...state.histories.slice(0, index), data, ...state.histories.slice(index + 1)],
 					};
 				}
+				return state;
 			});
 		},
 

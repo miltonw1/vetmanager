@@ -29,13 +29,14 @@ export const useSpeciesStore = create((set) => {
 			const data = await speciesServices.update(payload);
 
 			set((state) => {
-				const index = state.species((x) => x.id === data.id);
+				const index = state.species.findIndex((x) => x.id === data.id);
 
 				if (index !== -1) {
 					return {
-						species: [...state.species.slice(index), data, ...state.species.slice(index + 1)],
+						species: [...state.species.slice(0, index), data, ...state.species.slice(index + 1)],
 					};
 				}
+				return state;
 			});
 		},
 	};

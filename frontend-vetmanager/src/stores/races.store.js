@@ -28,13 +28,14 @@ export const useRaceStore = create((set) => {
 			const data = await racesServices.update(payload);
 
 			set((state) => {
-				const index = state.race((x) => x.id === data.id);
+				const index = state.races.findIndex((x) => x.id === data.id);
 
 				if (index !== -1) {
 					return {
-						clients: [...state.races.slice(index), data, ...state.races.slice(index + 1)],
+						races: [...state.races.slice(0, index), data, ...state.races.slice(index + 1)],
 					};
 				}
+				return state;
 			});
 		},
 	};

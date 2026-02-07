@@ -28,13 +28,14 @@ export const usePetStore = create((set) => {
 			const data = await petServices.update(payload);
 
 			set((state) => {
-				const index = state.pet((x) => x.id === data.id);
+				const index = state.pets.findIndex((x) => x.id === data.id);
 
 				if (index !== -1) {
 					return {
-						pets: [...state.pets.slice(index), data, ...state.pets.slice(index + 1)],
+						pets: [...state.pets.slice(0, index), data, ...state.pets.slice(index + 1)],
 					};
 				}
+				return state;
 			});
 		},
 	};
