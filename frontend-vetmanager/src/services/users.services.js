@@ -1,5 +1,17 @@
 const API_URL = import.meta.env.VITE_BASE_URL;
 
+export async function createUser(data) {
+	const response = await fetch(`${API_URL}/users`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+	});
+
+	return response.json();
+}
+
 export async function updateUser(id, data, token) {
 	const response = await fetch(`${API_URL}/users/${id}`, {
 		method: "PATCH",

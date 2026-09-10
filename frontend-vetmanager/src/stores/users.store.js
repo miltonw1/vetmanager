@@ -18,6 +18,27 @@ export const useUserStore = create((set) => {
             })
         },
 
+        create: async (data) => {
+            set({ request: { idle: false, fetching: true } })
+
+            try {
+                const response = await usersService.createUser(data)
+
+                if (response.statusCode >= 400) {
+                    throw new Error(response.message);
+                }
+
+                return response
+            } catch (error) {
+                if (error instanceof TypeError) {
+                    throw new Error("No se pudo conectar con el servidor. Intenta nuevamente.");
+                }
+                throw error;
+            } finally {
+                set({ request: { idle: false, fetching: false } })
+            }
+        },
+
         update: async (id, data, token) => {
             set({ request: { idle: false, fetching: true } })
 

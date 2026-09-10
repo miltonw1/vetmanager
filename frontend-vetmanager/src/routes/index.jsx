@@ -6,6 +6,7 @@ import {
 
 
 import LoginPage from '../pages/LoginPage'
+import RegisterPage from '../pages/users/RegisterPage'
 import ClientPage from '../pages/clients/ClientPage'
 import CreateClientPage from '../pages/clients/CreateClientPage'
 import EditClientPage from '../pages/clients/EditClientPage'
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
   },
   {
     path: '/home',

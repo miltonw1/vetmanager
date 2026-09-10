@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { LoginLayout } from "../layouts/LoginLayout";
 import { TextInput, PasswordInput } from "../components/common/inputs";
 import { useSessionStore } from "@s/session.store";
@@ -65,6 +65,10 @@ export default function LoginPage() {
           >
             {isFetching ? "..." : "Login"}
           </button>
+
+          <Link className="text-violet-800 underline" to="/register">
+            ¿No tienes cuenta? Crear cuenta
+          </Link>
         </form>
       </div>
     </LoginLayout>
