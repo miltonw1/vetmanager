@@ -8,6 +8,8 @@ import Select from "react-select";
 export function PetCreationModal({ client, onClose }) {
 	const [name, setName] = useState("");
 	const [weight, setWeight] = useState("");
+	const [allergies, setAllergies] = useState("");
+	const [bloodType, setBloodType] = useState("");
 	const [selectedSpecies, setSelectedSpecies] = useState(null);
 	const [selectedGender, setSelectedGender] = useState(null);
 	const [selectedRace, setSelectedRace] = useState(null);
@@ -62,6 +64,8 @@ export function PetCreationModal({ client, onClose }) {
 		const payload = {
 			name,
 			weight: Number(weight),
+			allergies,
+			blood_type: bloodType,
 			species_id: selectedSpecies?.value,
 			race_id: selectedRace?.value,
 			genre: selectedGender?.value,
@@ -115,15 +119,27 @@ export function PetCreationModal({ client, onClose }) {
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-			<div className="bg-cyan-800 h-[65%] w-[25%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
+			<div className="bg-cyan-800 h-[80%] w-[25%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
 				<h1 className="text-3xl text-white">Mascota nueva para {client.name}</h1>
-				<div>
+				<div className="w-full flex-1 overflow-y-auto flex flex-col gap-3">
 					<TextInput label="Nombre" className="w-full" value={name} onChange={(event) => setName(event.target.value)} />
 					<TextInput
 						label="Peso"
 						className="w-full"
 						value={weight}
 						onChange={handleWeightChange} // Usamos la función con regexp
+					/>
+					<TextInput
+						label="Alergias"
+						className="w-full"
+						value={allergies}
+						onChange={(event) => setAllergies(event.target.value)}
+					/>
+					<TextInput
+						label="Tipo de sangre"
+						className="w-full"
+						value={bloodType}
+						onChange={(event) => setBloodType(event.target.value)}
 					/>
 					<label className="block">Género</label>
 					<Select
