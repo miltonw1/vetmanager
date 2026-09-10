@@ -2,11 +2,21 @@ import style from "./MainLayout.module.css";
 import { useEffect } from "react";
 import { useRaceStore } from "@s/races.store";
 import { useSpeciesStore } from "@s/species.store";
+import { useSessionStore } from "@s/session.store";
 import clsx from "clsx";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Btn } from "../components/common/Btn";
 
 export function MainLayout({ title, children }) {
+	const logOut = useSessionStore((store) => store.logOut);
+	const navigate = useNavigate();
+
+	function handleLogOut() {
+		logOut();
+		navigate("/login");
+	}
+
 
 
 	const {
@@ -48,7 +58,19 @@ export function MainLayout({ title, children }) {
 			)}
 		>
 			<nav className={["main-layout__menu"]}>
+				<h1 className={clsx("text-xl", "font-bold", "text-violet-800", "dark:text-violet-400", "p-4")}>
+					Vet Manager
+				</h1>
+				<Btn outline className="mx-4 mt-2" onClick={() => navigate("/home")}>
+					Inicio
+				</Btn>
 			</nav>
+
+			<div className={style["main-layout__actions"]}>
+				<Btn outline onClick={handleLogOut}>
+					Cerrar sesión
+				</Btn>
+			</div>
 
 			<h2 className={clsx(style["main-layout__title"], "text-3xl", "font-bold", "mt-8")} data-cy="page-title">
 				{title}

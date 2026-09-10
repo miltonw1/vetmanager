@@ -16,6 +16,7 @@ export function LoginLayout({ title, children, img }) {
             </picture>
 
             <section className={style['login-layout__panel']}>
+                <h1 className="text-4xl font-bold text-violet-800 text-center pt-10">Vet Manager</h1>
                 {children}
             </section>
         </main>
