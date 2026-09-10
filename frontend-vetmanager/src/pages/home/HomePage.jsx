@@ -22,10 +22,6 @@ return(
                     to="/races"
                 />
                 <MenuCard
-                    linkName="🔑 Usuarios"
-                    to="/users"
-                />
-                <MenuCard
                     linkName="👤 Perfil"
                     to="/profile"
                 />
