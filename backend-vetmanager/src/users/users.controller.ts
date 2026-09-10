@@ -11,7 +11,6 @@ import { UpdatePasswordDto } from "./dto/update-password.dto";
 import { User } from "../session/decorators/user.decorator";
 import { ActiveUser } from "../session/interfaces/active-user.interface";
 
-@UseGuards(JwtAuthGuard)
 @Controller("users")
 export class UsersController {
 	constructor(
@@ -35,16 +34,19 @@ export class UsersController {
 		throw new NotAcceptableException("Wrong parameters");
 	}
 
+	@UseGuards(JwtAuthGuard)
 	@Get()
 	findAll(): Promise<UserDto[]> {
 		return this.usersService.findAll();
 	}
 
+	@UseGuards(JwtAuthGuard)
 	@Get(":id")
 	findOne(@Param("id", ParseIntPipe) id: number): Promise<UserDto> {
 		return this.usersService.findOne(id);
 	}
 
+	@UseGuards(JwtAuthGuard)
 	@Patch(":id")
 	update(@Param("id") id: string, @Body() data: UpdateUserDto, @User() user: ActiveUser): Promise<UserDto> {
 		const userId = user.userId;
@@ -56,6 +58,7 @@ export class UsersController {
 		return this.usersService.update(Number(id), data as PrismaUser);
 	}
 
+	@UseGuards(JwtAuthGuard)
 	@Patch(":id/password")
 	async updatePassword(@Param("id", ParseIntPipe) id: number, @Body() data: UpdatePasswordDto, @User() user: ActiveUser): Promise<UserDto> {
 		const userId = user.userId;
@@ -76,6 +79,7 @@ export class UsersController {
 	}
 
 
+	@UseGuards(JwtAuthGuard)
 	@Delete(":id")
 	remove(@Param("id") id: string): Promise<UserDto> {
 		return this.usersService.remove(Number(id));

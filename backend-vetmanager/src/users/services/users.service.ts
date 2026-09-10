@@ -1,15 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { User } from "@prisma/client";
+import { ConflictException, Injectable } from "@nestjs/common";
+import { Prisma, User } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
 export class UsersService {
 	constructor(private prisma: PrismaService) {}
 
-	create({ name, email }) {
-		return this.prisma.user.create({
-			data: { name, email },
-		});
+	async create({ name, email }) {
+		try {
+			return await this.prisma.user.create({
+				data: { name, email },
+			});
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+				throw new ConflictException("El correo ya está registrado");
+			}
+			throw error;
+		}
 	}
 
 	findAll() {
