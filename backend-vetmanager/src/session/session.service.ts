@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import { compare } from "bcrypt";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
@@ -17,7 +17,9 @@ export class SessionService {
 
 		const { passwords, ...user } = result;
 
-		const isSamePassword =  await bcrypt.compare(password, passwords[0].body);
+		if (!passwords?.length) return null;
+
+		const isSamePassword =  await compare(password, passwords[0].body);
 
 		return isSamePassword
 			? user as User
