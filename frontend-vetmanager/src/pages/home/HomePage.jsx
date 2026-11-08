@@ -25,6 +25,10 @@ return(
                     linkName="👤 Perfil"
                     to="/profile"
                 />
+                <MenuCard
+                    linkName="💳 Planes"
+                    to="/plans"
+                />
             </div>
 </MainLayout>
 

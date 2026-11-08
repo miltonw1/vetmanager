@@ -58,7 +58,7 @@ export default function LoginPage() {
           <p className="text-red-600">{loginError}</p>
 
           <button
-            className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60"
+            className="rounded-lg border bg-blue-700 hover:bg-blue-800 border-transparent text-white mt-12 h-12 w-60"
             data-cy="login-button"
             disabled={isDisabled}
             type="submit"
@@ -66,7 +66,7 @@ export default function LoginPage() {
             {isFetching ? "..." : "Login"}
           </button>
 
-          <Link className="text-violet-800 underline" to="/register">
+          <Link className="text-blue-800 underline" to="/register">
             ¿No tienes cuenta? Crear cuenta
           </Link>
         </form>

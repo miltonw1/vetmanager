@@ -36,7 +36,7 @@ export function PetHistoryModal({ history, name, tutor, weight, diagnosis, obser
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-			<div className="bg-cyan-800 h-[60%] w-[55%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
+			<div className="bg-cyan-800 text-white h-[60%] w-[55%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
 				<div className="w-full">
 					<div className="flex justify-between w-full">
 						<h2 className="text-xl font-bold">Detalles de la Historia Clínica de {name}</h2>

@@ -135,7 +135,7 @@ export default function RegisterPage() {
           <p className="text-red-600">{registerError}</p>
 
           <button
-            className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60"
+            className="rounded-lg border bg-blue-700 hover:bg-blue-800 border-transparent text-white mt-12 h-12 w-60"
             data-cy="register-button"
             disabled={isDisabled}
             type="submit"
@@ -143,7 +143,7 @@ export default function RegisterPage() {
             {isFetching ? "..." : "Crear cuenta"}
           </button>
 
-          <Link className="text-violet-800 underline" to="/login">
+          <Link className="text-blue-800 underline" to="/login">
             ¿Ya tienes cuenta? Inicia sesión
           </Link>
         </form>

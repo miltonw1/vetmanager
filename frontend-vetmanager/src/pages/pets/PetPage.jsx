@@ -102,7 +102,7 @@ export default function PetPage() {
 
   return (
     <MainLayout title={pet.name}>
-      <section className="h-[100%] space-y-2 border border-violet-800 p-4">
+      <section className="h-[100%] space-y-2 border border-blue-800 p-4">
         <p>
           <strong>Nombre:</strong>&nbsp;{pet.name}
         </p>

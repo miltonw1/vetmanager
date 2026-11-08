@@ -48,7 +48,7 @@ export default function ClientsListPage() {
                 <Link to={`/clients/create`}>
                     {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
                     <button
-                        className="rounded-lg border bg-violet-800 border-white-400 text-white h-12 w-60"
+                        className="rounded-lg border bg-blue-700 hover:bg-blue-800 border-transparent text-white h-12 w-60"
                     >
                         Nuevo Cliente
                     </button>

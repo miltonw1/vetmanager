@@ -21,5 +21,6 @@
 .login-layout__panel {
     border-radius: calc(var(--gap-space) / 2);
     width: 42rem;
-    background-color: #eee;
+    background-color: #f3f4f6;
+    color: #1f2937;
 }

@@ -21,6 +21,7 @@ import CreateRacePage from '../pages/races/CreateRacePage'
 import { ProtectedRoute } from './ProtectedRoute';
 import HomePage from '../pages/home/HomePage'
 import ProfilePage from '../pages/users/ProfilePage'
+import PlansPage from '../pages/subscriptions/PlansPage'
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <ProfilePage />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/plans',
+    element: (
+      <ProtectedRoute>
+        <PlansPage />
       </ProtectedRoute>
     )
   },

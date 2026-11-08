@@ -59,8 +59,8 @@ export default function ClientPage() {
 	}
 
 	const petList = clientPets.map((pet) => (
-		<li key={pet.id} className="hover:text-violet-900 hover:pl-2 transition-all duration-200">
-			<Link to={`/pets/${pet.id}`} className="text-lg font-semibold text-violet-800 dark:text-violet-200">
+		<li key={pet.id} className="hover:text-blue-900 hover:pl-2 transition-all duration-200">
+			<Link to={`/pets/${pet.id}`} className="text-lg font-semibold text-blue-800 dark:text-blue-200">
 				{pet.name}
 			</Link>
 		</li>
@@ -69,7 +69,7 @@ export default function ClientPage() {
 	return (
 		<MainLayout title="Cliente">
 			<div className="grid grid-col-2 space-y-4">
-				<section className="h-[100%] space-y-2 border border-violet-800 p-4">
+				<section className="h-[100%] space-y-2 border border-blue-800 p-4">
 					<h3>Información del cliente</h3>
 					{client?.debt && client.debt !== "0" ? (
 						<div>
@@ -127,18 +127,18 @@ export default function ClientPage() {
 				<div className="flex gap-4">
 					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 					<button onClick={handlePetCreationModalShow}
-						className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60">
+						className="rounded-lg border bg-blue-700 hover:bg-blue-800 border-transparent text-white mt-12 h-12 w-60">
 						Agregar Mascota
 					</button>
 					<Link to={`/clients/${client.id}/edit`}>
 						<button
-							className="rounded-lg border bg-violet-800 border-white-400 text-white mt-12 h-12 w-60">
+							className="rounded-lg border bg-blue-700 hover:bg-blue-800 border-transparent text-white mt-12 h-12 w-60">
 							Editar Cliente
 						</button>
 					</Link>
 				</div>
 
-				<section className=" border-violet-800 p-4">
+				<section className=" border-blue-800 p-4">
 					<h4>Mascotas</h4>
 					<ul className="space-y-2">
 						{petList}  {/* Aquí usas la lista generada arriba */}

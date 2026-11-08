@@ -119,7 +119,7 @@ export function PetCreationModal({ client, onClose }) {
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-			<div className="bg-cyan-800 h-[80%] w-[25%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
+			<div className="bg-cyan-800 text-white h-[80%] w-[25%] p-5 rounded flex flex-col justify-between items-center gap-5 relative">
 				<h1 className="text-3xl text-white">Mascota nueva para {client.name}</h1>
 				<div className="w-full flex-1 overflow-y-auto flex flex-col gap-3">
 					<TextInput label="Nombre" className="w-full" value={name} onChange={(event) => setName(event.target.value)} />
@@ -171,10 +171,10 @@ export function PetCreationModal({ client, onClose }) {
 					/>
 				</div>
 				<div className="w-full flex justify-between mt-auto">
-					<button className="bg-red-500 text-white py-2 px-4 rounded" onClick={handleCancel}>
+					<button type="button" className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded" onClick={handleCancel}>
 						Cancelar
 					</button>
-					<button className="bg-green-500 text-white py-2 px-4 rounded" onClick={handleSubmit}>
+					<button type="button" className="bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded" onClick={handleSubmit}>
 						Aceptar
 					</button>
 				</div>
