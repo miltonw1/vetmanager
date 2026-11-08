@@ -38,7 +38,14 @@ export class SessionService {
 
 		return {
 			access_token: token,
-			exp: unixTimestamp
-		}
+			exp: unixTimestamp,
+			user: {
+				id: user.id,
+				name: user.name,
+				email: user.email,
+				plan_expires_at: user.plan_expires_at,
+				is_trial: user.is_trial,
+			},
+		};
 	}
 }

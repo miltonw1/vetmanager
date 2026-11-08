@@ -8,17 +8,34 @@ datasource db {
 }
 
 model User {
-  id            Int               @id @default(autoincrement())
-  email         String            @unique
-  name          String?
-  passwords     Password[]
-  clients       Client[]
-  pets          Pet[]
-  pet_histories PetHistory[]
-  pet_images    PetHistoryImage[]
-  races         Race[]
-  species       Species[]
-  debt_logs     DebtLog[]
+  id              Int            @id @default(autoincrement())
+  email           String         @unique
+  name            String?
+  plan_expires_at DateTime       @default(now())
+  is_trial        Boolean        @default(true)
+  passwords       Password[]
+  clients         Client[]
+  pets            Pet[]
+  pet_histories   PetHistory[]
+  pet_images      PetHistoryImage[]
+  races           Race[]
+  species         Species[]
+  debt_logs       DebtLog[]
+  subscriptions   Subscription[]
+}
+
+model Subscription {
+  id               Int      @id @default(autoincrement())
+  user_id          Int
+  plan             String
+  price            Decimal
+  days             Int
+  status           String   @default("pending")
+  mp_preference_id String?
+  mp_payment_id    String?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  user             User     @relation(fields: [user_id], references: [id])
 }
 
 model Password {

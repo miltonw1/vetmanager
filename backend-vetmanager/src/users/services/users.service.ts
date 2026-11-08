@@ -8,8 +8,16 @@ export class UsersService {
 
 	async create({ name, email }) {
 		try {
+			const trialExpiresAt = new Date();
+			trialExpiresAt.setDate(trialExpiresAt.getDate() + 7);
+
 			return await this.prisma.user.create({
-				data: { name, email },
+				data: {
+					name,
+					email,
+					plan_expires_at: trialExpiresAt,
+					is_trial: true,
+				},
 			});
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
@@ -43,7 +51,7 @@ export class UsersService {
 	}
 
 	findByEmail(email: string) {
-		return this.prisma.user.findFirstOrThrow({
+		return this.prisma.user.findFirst({
 			where: { email },
 			include: {
 				passwords: {

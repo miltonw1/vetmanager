@@ -18,6 +18,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "node:path";
 import { DebtLogService } from './debt-log/debt-log.service';
 import { DebtLogController } from './debt-log/debt-log.controller';
+import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 
 
 @Module({
@@ -37,6 +38,7 @@ import { DebtLogController } from './debt-log/debt-log.controller';
 		RaceModule,
 		UsersModule,
 		SessionModule,
+		SubscriptionsModule,
 	],
 	controllers: [AppController, DebtLogController],
 	providers: [AppService, PrismaService, DebtLogService],
