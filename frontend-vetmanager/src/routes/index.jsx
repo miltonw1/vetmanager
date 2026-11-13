@@ -6,6 +6,8 @@ import {
 
 
 import LoginPage from '../pages/LoginPage'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 import RegisterPage from '../pages/users/RegisterPage'
 import ClientPage from '../pages/clients/ClientPage'
 import CreateClientPage from '../pages/clients/CreateClientPage'
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPasswordPage />,
   },
   {
     path: '/register',

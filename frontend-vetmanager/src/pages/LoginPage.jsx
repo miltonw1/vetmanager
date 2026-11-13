@@ -66,6 +66,10 @@ export default function LoginPage() {
             {isFetching ? "..." : "Login"}
           </button>
 
+          <Link className="text-blue-800 underline" to="/forgot-password">
+            ¿Olvidaste tu contraseña?
+          </Link>
+
           <Link className="text-blue-800 underline" to="/register">
             ¿No tienes cuenta? Crear cuenta
           </Link>
