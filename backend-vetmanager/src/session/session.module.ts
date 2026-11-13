@@ -6,6 +6,7 @@ import { PrismaModule } from "../prisma/prisma.module";
 import { UsersModule } from "../users/users.module";
 
 import { SessionService } from "./session.service";
+import { PasswordResetService } from "./password-reset.service";
 import { UsersService } from "../users/services/users.service";
 import { PasswordsService } from "../users/services/passwords.service";
 
@@ -23,6 +24,6 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 		}),
 	],
 	controllers: [SessionController],
-	providers: [SessionService, UsersService, PasswordsService, JwtStrategy],
+	providers: [SessionService, PasswordResetService, UsersService, PasswordsService, JwtStrategy],
 })
 export class SessionModule {}

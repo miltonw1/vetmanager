@@ -8,4 +8,6 @@ export const EnvConfiguration = () => ({
 	mpWebhookSecret: process.env.MP_WEBHOOK_SECRET,
 	frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
 	mpNotificationUrl: process.env.MP_NOTIFICATION_URL,
+	resendApiKey: process.env.RESEND_API_KEY,
+	resendFrom: process.env.RESEND_FROM,
 });

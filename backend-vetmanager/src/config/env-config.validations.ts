@@ -10,6 +10,8 @@ const envConfigValidationSchema = z.object({
 	MP_WEBHOOK_SECRET: z.string().optional(),
 	FRONTEND_URL: z.string().optional(),
 	MP_NOTIFICATION_URL: z.string().optional(),
+	RESEND_API_KEY: z.string().optional(),
+	RESEND_FROM: z.string().optional(),
 });
 
 export const EnvConfigValidation = envConfigValidationSchema.parse;

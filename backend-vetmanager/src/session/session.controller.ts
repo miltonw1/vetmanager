@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post, NotAcceptableException, UnauthorizedException, UseGuards, Request } from "@nestjs/common";
+import { Body, Controller, Get, Post, HttpCode, HttpStatus, NotAcceptableException, UnauthorizedException, UseGuards, Request } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { hash } from "bcrypt";
 
 import { JwtAuthGuard } from "./guards/jwt.guard";
-import { LoginDto } from "./dto";
+import { ForgotPasswordDto, LoginDto, ResetPasswordDto } from "./dto";
 import { SessionService } from "./session.service";
+import { PasswordResetService } from "./password-reset.service";
 
 import { CreateUserDto, UserDto } from "../users/dto";
 import { UsersService } from "../users/services/users.service";
@@ -22,6 +23,7 @@ export class SessionController {
 		private readonly sessionService: SessionService,
 		private readonly usersService: UsersService,
 		private readonly passwordsService: PasswordsService,
+		private readonly passwordResetService: PasswordResetService,
 		private readonly config: ConfigService,
 	) {}
 
@@ -54,6 +56,24 @@ export class SessionController {
 		}
 
 		throw new NotAcceptableException("Wrong parameters");
+	}
+
+	@Post("forgot-password")
+	@HttpCode(HttpStatus.OK)
+	async forgotPassword(@Body() data: ForgotPasswordDto) {
+		await this.passwordResetService.requestReset(data.email);
+
+		return {
+			message: "Si el correo está registrado, te enviamos un enlace para restablecer tu contraseña.",
+		};
+	}
+
+	@Post("reset-password")
+	@HttpCode(HttpStatus.OK)
+	async resetPassword(@Body() data: ResetPasswordDto) {
+		await this.passwordResetService.resetPassword(data.token, data.newPassword);
+
+		return { message: "Tu contraseña se actualizó correctamente." };
 	}
 
 	@UseGuards(JwtAuthGuard)

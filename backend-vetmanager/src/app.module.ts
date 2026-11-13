@@ -19,6 +19,7 @@ import { join } from "node:path";
 import { DebtLogService } from './debt-log/debt-log.service';
 import { DebtLogController } from './debt-log/debt-log.controller';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { MailModule } from "./mail/mail.module";
 
 
 @Module({
@@ -31,6 +32,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 		ServeStaticModule.forRoot({
 			rootPath: join(__dirname, '..', 'public'),
 		  }),
+		MailModule,
 		PetsModule,
 		PetHistoryModule,
 		ClientsModule,
