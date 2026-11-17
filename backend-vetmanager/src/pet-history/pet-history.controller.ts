@@ -99,7 +99,7 @@ export class PetHistoryController {
   }))
   async uploadFile(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @User() user: ActiveUser) {
     const filePath = file.path
-    const filePathSplit = filePath.split("\\").slice(1)
+    const filePathSplit = filePath.split(/[\\/]/).slice(1)
     const pathUrl = process.env.BASE_URL + filePathSplit.join("/")
     const result = await this.imageHistoryService.create({pet_history_id: Number(id), image_src: file.path, image_url: pathUrl} as PetHistoryImage, user.userId);
   }
