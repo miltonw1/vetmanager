@@ -8,7 +8,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ClientsModule } from "./clients/clients.module";
 import { PetsModule } from "./pets/pets.module";
-import { SpeciesModule } from "./species/Species.module";
+import { SpeciesModule } from "./species/species.module";
 import { PrismaService } from "./prisma/prisma.service";
 import { RaceModule } from "./races/races.module";
 import { UsersModule } from "./users/users.module";
