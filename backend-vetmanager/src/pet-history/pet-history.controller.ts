@@ -8,8 +8,8 @@ import { diskStorage } from 'multer';
 import { JwtAuthGuard } from "../session/guards/jwt.guard";
 import { User } from "../session/decorators/user.decorator";
 import { ActiveUser } from "../session/interfaces/active-user.interface";
-import path from 'node:path';
-import fs from 'node:fs';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 
 const IMAGES_PATH = './public/images/histories';
 
